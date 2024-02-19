@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tsubaki's GroundCloud
-// @namespace    http://tsubaki.moe/
+// @namespace    https://github.com/trevorftp
 // @version      0.0.1
 // @description  Redesign GroundCloud.io
 // @author       Trevor Derifield
