@@ -109,13 +109,44 @@
             // Iterate through each table row
             tableRows.forEach(function(row) {
                 // Get the value from the "route-list-row__stop-per-hour align-middle" td
+                // route-list-row__packages align-middle
                 var stopPerHourTd = row.querySelector('.route-list-row__stop-per-hour.align-middle');
                 var stopPerHourValue = stopPerHourTd.textContent.trim();
 
                 // Get the value from the "route-list-row__stops align-middle" td
                 var stopsTd = row.querySelector('.route-list-row__stops.align-middle');
+                var packagesTd = row.querySelector('.route-list-row__packages.align-middle');
                 var stopsValue = stopsTd.querySelector('.col-xl-6.text-xl-right');
                 var stopsText = stopsValue ? stopsValue.textContent.trim() : 'N/A';
+
+                var stopProgress = stopsTd.querySelector('.progress');
+                var packageProgress = packagesTd.querySelector('.progress');
+                stopProgress.style.height = '30px';
+                packageProgress.style.height = '30px';
+
+                var stopContainer = stopsTd.querySelector('.gc-overview-progress-bar.progress-bar-width');
+                var packageContainer = packagesTd.querySelector('.gc-overview-progress-bar.progress-bar-width');
+                var stopTextRow = stopsTd.querySelector('.row.text-nowrap');
+                var packageTextRow = packagesTd.querySelector('.row.text-nowrap');
+
+                if (stopContainer && packageContainer && stopTextRow && packageTextRow) {
+                    // Append the text row to the container
+                    stopContainer.appendChild(stopTextRow);
+                    packageContainer.appendChild(packageTextRow);
+
+                    // Adjust the positioning of the text row
+                    stopTextRow.style.position = 'relative';
+                    stopTextRow.style.top = '-25px'; // Adjust this value as needed
+                    stopTextRow.style.left = '5%'; // Adjust this value as needed
+                    stopTextRow.style.textAlign = 'center';
+                    stopTextRow.style.width = '100%';
+
+                    packageTextRow.style.position = 'relative';
+                    packageTextRow.style.top = '-25px'; // Adjust this value as needed
+                    packageTextRow.style.left = '5%'; // Adjust this value as needed
+                    packageTextRow.style.textAlign = 'center';
+                    packageTextRow.style.width = '100%';
+                }
 
                 // If stopsValue is 'N/A', set stopsText to 'N/A'
                 if (stopsText === 'N/A') {
@@ -133,7 +164,7 @@
                 newTd.className = 'route-list-row__est-comp align-middle'; // Set class name
 
                 // Perform division only if stopPerHourValue is not 'N/A' and stopsValue is not 'N/A'
-                if (stopPerHourValue !== 'N/A' && stopsValue !== 'N/A') {
+                if (stopPerHourValue !== 'N/A' && stopPerHourValue != 0 && stopsValue !== 'N/A') {
                     // Parse values to floats and perform division
                     var stopPerHour = parseFloat(stopPerHourValue);
                     var stops = parseFloat(stopsValue);
@@ -147,13 +178,17 @@
                     newTd.textContent = timeString;
 
                     // Update the color of the progress bar based on remaining time
-                    var progressBar = stopsTd.querySelector('.progress-bar');
+                    var stopProgressBar = stopsTd.querySelector('.progress-bar');
+                    var packageProgressBar = packagesTd.querySelector('.progress-bar');
                     if (hours >= 10) {
-                        progressBar.style.backgroundColor = '#a72828'; // Red color
+                        stopProgressBar.style.backgroundColor = '#f18383'; // Red color
+                        packageProgressBar.style.backgroundColor = '#f18383'; // Red color
                     } else if (hours >= 8) {
-                        progressBar.style.backgroundColor = '#f5a644'; // Yellow color
+                        stopProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
+                        packageProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
                     } else {
-                        progressBar.style.backgroundColor = '#28a745'; // Green color
+                        stopProgressBar.style.backgroundColor = '#39e961'; // Green color
+                        packageProgressBar.style.backgroundColor = '#39e961'; // Green color
                     }
                 } else {
                     // If stopPerHourValue or stopsValue is 'N/A', set content to 'N/A'
