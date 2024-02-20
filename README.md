@@ -2,6 +2,9 @@
 A userscript designed and developed to make the groundcloud.io dashboard less painful.
 The code will always be evolving and changing, JavaScript is newer to me in the sense of actually trying to use it for something so I will learn as I go. So the code may be kind of gross or not make sense in some parts.
 
+Install: 
+Use any usesrscript manager, and make sure the script is ran at "document-body" in the userscript settings or it may not look like it's working!
+
 Current updates are:
 1. New Row "Est. To Completion" - Gives you an hour - minute estimation on route finish based off hourly stop average.
 2. Stop progress bar is color-coded based on the 'Est. To Completion'.
