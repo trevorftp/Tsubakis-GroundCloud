@@ -19,3 +19,5 @@ To-Do:
 Bugs: 
 1. Filtering the terminals wont update the data
 2. If a driver finishes route and there is like 1 stop left the completion time will remain at a low number. Plan to fix this when I change the logic.
+
+![Capture](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/99fac53e-4a9f-4b0c-a8a7-4a1bdc015376)
