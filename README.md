@@ -1,6 +1,6 @@
 # Tsubakis-GroundCloud
 A userscript designed and developed to make the groundcloud.io dashboard less painful.
-The code will always be evolving and changing, lots of things I put in it works and I have not cleaned it up yet, JavaScript is newer to me in the sense of actually trying to use it for something so I will learn as I go.
+The code will always be evolving and changing, JavaScript is newer to me in the sense of actually trying to use it for something so I will learn as I go. So the code may be kind of gross or not make sense in some parts.
 
 Current updates are:
 1. New Row "Est. To Completion" - Gives you an hour - minute estimation on route finish based off hourly stop average.
