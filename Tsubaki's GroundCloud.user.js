@@ -1,10 +1,13 @@
 // ==UserScript==
 // @name         Tsubaki's GroundCloud
 // @namespace    https://github.com/trevorftp
-// @version      0.0.1
+// @version      0.0.2
 // @description  Redesign GroundCloud.io
 // @author       Trevor Derifield
 // @match        https://groundcloud.io/*
+// @downloadURL https://github.com/trevorftp/Tsubakis-GroundCloud/blob/main/Tsubaki's%20GroundCloud.user.js
+// @updateURL	https://github.com/trevorftp/Tsubakis-GroundCloud/blob/main/Tsubaki's%20GroundCloud.user.js
+// @require     https://aethiingekaif4ua.storage.googleapis.com/frontend/js/dashboard/overview.js
 // @grant        GM_addStyle
 // ==/UserScript==
 
@@ -26,8 +29,74 @@
 
 (function() {
     'use strict';
-
+    
     console.log('Tsubakis GroundCloud Script has ran!');
+
+    var appRoot;
+    var vueInstance;
+    var authWrapper;
+    var overview;
+    var overviewMap;
+    var routeList;
+
+    function setupVue() {
+        // Vue Stuff..
+        /*
+            -------------------------------------    <RouteList> Stuff    -------------------------------------
+            Each Table Data item gets <OverviewProgressBar>, <OverviewProgressBar>, <RouteDayExceptionDetails>, <BLink>.
+            <OverviewProgressBar> - Route Stops
+                  progressBarBackgroundColor - Fill Color (DEF. #28a745)
+                  valueMax - Route Total Stops
+                  valueMin - Minimum Bar Value (Always 0)
+                  valueNow - Route Stops Done
+                  --- Computed Data ---
+                  complete - Bool (Assuming it turns true when valueNow == ValueMax)
+                  leftDisplay - String (How many stops left)
+
+            <OverviewProgressBar> - Route Packages
+                  progressBarBackgroundColor - Fill Color (DEF. #28a745)
+                  valueMax - Route Total Packages
+                  valueMin - Minimum Bar Value (Always 0)
+                  valueNow - Route Packages Done
+                  --- Computed Data ---
+                  complete - Bool (Assuming it turns true when valueNow == ValueMax)
+                  leftDisplay - String (How many stops left)
+
+            <RouteDayExceptionDetails> - Status Codes (Also Contains route, routeDay and driver information)
+                  exceptionsCompleted - A status code or attempted delivery.
+                  impactsCompleted - A impactable status code. (02, 03, 04, 06, etc...)
+                  routeDay - Information about the route, routeDay, and driver.
+                        est_distance - Estimated route distance. (Not sure this is used on the dashboard).
+                        est_travel_time - Estimated drive time in seconds.
+                        miles_total - Estimated total miles.
+                        driver - Driver information.
+                              user - Any good information is under user.
+                                    email - Drivers email.
+                                    first_name - Drivers first name.
+                                    last_name - Drivers last name.
+                                    username - Drivers username.
+                        route - Route information (Only good for WA#)
+                              name - Route work area.
+            -----------------------------------------------------------------------------------------------------
+            -------------------------------------    <OverViewMap> Stuff    -------------------------------------
+            driversWithLastLocation - Array[NUM] (May be useful for logouts?)
+        */
+        appRoot = document.querySelector('#overview_viewapp');
+
+        if (appRoot) {
+            // Access the Vue instance
+            vueInstance = appRoot.__vue__;
+            console.log('Vue detected and found: ', vueInstance);
+
+            // Traverse the Vue instance hierarchy to reach our components.
+            authWrapper = vueInstance.$children.find(child => child.$options.name === 'AuthWrapper');
+            overview = authWrapper.$children.find(child => child.$options.name === 'Overview');
+            overviewMap = overview.$children.find(child => child.$options.name === 'OverviewMap');
+            routeList = overview.$children.find(child => child.$options.name === 'RouteList');
+        } else {
+            console.log('The Vue instance could not be found.');
+        }
+    }
 
     function notification(message, textColor, iconColor, bgColor, borderColor) {
         // Create a new div element for the notification
@@ -107,101 +176,97 @@
             var tableRows = document.querySelectorAll('.route-list-row__row');
 
             // Iterate through each table row
-            tableRows.forEach(function(row) {
-                // Get the value from the "route-list-row__stop-per-hour align-middle" td
-                // route-list-row__packages align-middle
-                var stopPerHourTd = row.querySelector('.route-list-row__stop-per-hour.align-middle');
-                var stopPerHourValue = stopPerHourTd.textContent.trim();
+            routeList.routeDays.forEach(function(routeDay, index) {
+                // Get the corresponding table row
+                var row = tableRows[index];
 
-                // Get the value from the "route-list-row__stops align-middle" td
-                var stopsTd = row.querySelector('.route-list-row__stops.align-middle');
-                var packagesTd = row.querySelector('.route-list-row__packages.align-middle');
-                var stopsValue = stopsTd.querySelector('.col-xl-6.text-xl-right');
-                var stopsText = stopsValue ? stopsValue.textContent.trim() : 'N/A';
+                if (row && routeDay) {
+                    // Access the stopsPerHourStatsByRouteDay object for the current routeDay
+                    var routeId = routeDay.id;
+                    var stopsPerHourStats = routeList.stopsPerHourStatsByRouteDay[routeId];
+                    var stopStats = routeList.stopStatsByRouteDay[routeId];
 
-                var stopProgress = stopsTd.querySelector('.progress');
-                var packageProgress = packagesTd.querySelector('.progress');
-                stopProgress.style.height = '30px';
-                packageProgress.style.height = '30px';
+                    // Get the value from the "route-list-row__stops align-middle" td
+                    var stopsTd = row.querySelector('.route-list-row__stops.align-middle');
+                    var packagesTd = row.querySelector('.route-list-row__packages.align-middle');
+                    var stopsValue = stopStats.total - stopStats.completed;
+                    var stopsText = stopsValue;
 
-                var stopContainer = stopsTd.querySelector('.gc-overview-progress-bar.progress-bar-width');
-                var packageContainer = packagesTd.querySelector('.gc-overview-progress-bar.progress-bar-width');
-                var stopTextRow = stopsTd.querySelector('.row.text-nowrap');
-                var packageTextRow = packagesTd.querySelector('.row.text-nowrap');
+                    var stopProgress = stopsTd.querySelector('.progress');
+                    var packageProgress = packagesTd.querySelector('.progress');
+                    stopProgress.style.height = '30px';
+                    packageProgress.style.height = '30px';
 
-                if (stopContainer && packageContainer && stopTextRow && packageTextRow) {
-                    // Append the text row to the container
-                    stopContainer.appendChild(stopTextRow);
-                    packageContainer.appendChild(packageTextRow);
+                    var stopContainer = stopsTd.querySelector('.gc-overview-progress-bar.progress-bar-width');
+                    var packageContainer = packagesTd.querySelector('.gc-overview-progress-bar.progress-bar-width');
+                    var stopTextRow = stopsTd.querySelector('.row.text-nowrap');
+                    var packageTextRow = packagesTd.querySelector('.row.text-nowrap');
 
-                    // Adjust the positioning of the text row
-                    stopTextRow.style.position = 'relative';
-                    stopTextRow.style.top = '-25px'; // Adjust this value as needed
-                    stopTextRow.style.left = '5%'; // Adjust this value as needed
-                    stopTextRow.style.textAlign = 'center';
-                    stopTextRow.style.width = '100%';
+                    if (stopContainer && packageContainer && stopTextRow && packageTextRow) {
+                        // Append the text row to the container
+                        stopContainer.appendChild(stopTextRow);
+                        packageContainer.appendChild(packageTextRow);
 
-                    packageTextRow.style.position = 'relative';
-                    packageTextRow.style.top = '-25px'; // Adjust this value as needed
-                    packageTextRow.style.left = '5%'; // Adjust this value as needed
-                    packageTextRow.style.textAlign = 'center';
-                    packageTextRow.style.width = '100%';
-                }
+                        // Adjust the positioning of the text row
+                        stopTextRow.style.position = 'relative';
+                        stopTextRow.style.top = '-25px'; // Adjust this value as needed
+                        stopTextRow.style.left = '5%'; // Adjust this value as needed
+                        stopTextRow.style.textAlign = 'center';
+                        stopTextRow.style.width = '100%';
 
-                // If stopsValue is 'N/A', set stopsText to 'N/A'
-                if (stopsText === 'N/A') {
-                    stopsValue = stopsText;
-                }
-                else if (stopsValue.querySelector('svg[data-icon="check"]')) {
-                    stopsValue = "N/A";
-                } else {
-                    stopsValue = stopsText.replace(/[^\d.-]/g, '');
-                }
-
-                // Create a new td element
-                var newTd = document.createElement('td');
-                newTd.setAttribute('data-v-33da10de', ''); // Set data-v attribute
-                newTd.className = 'route-list-row__est-comp align-middle'; // Set class name
-
-                // Perform division only if stopPerHourValue is not 'N/A' and stopsValue is not 'N/A'
-                if (stopPerHourValue !== 'N/A' && stopPerHourValue != 0 && stopsValue !== 'N/A') {
-                    // Parse values to floats and perform division
-                    var stopPerHour = parseFloat(stopPerHourValue);
-                    var stops = parseFloat(stopsValue);
-                    var result = stops / stopPerHour;
-
-                    // Convert result to time format
-                    var hours = Math.floor(result);
-                    var minutes = Math.round((result - hours) * 60);
-                    var timeString = hours + 'h ' + minutes + 'm Left';
-                    // Set content to the formatted time string
-                    newTd.textContent = timeString;
-
-                    // Update the color of the progress bar based on remaining time
-                    var stopProgressBar = stopsTd.querySelector('.progress-bar');
-                    var packageProgressBar = packagesTd.querySelector('.progress-bar');
-                    if (hours >= 10) {
-                        stopProgressBar.style.backgroundColor = '#f18383'; // Red color
-                        packageProgressBar.style.backgroundColor = '#f18383'; // Red color
-                    } else if (hours >= 8) {
-                        stopProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
-                        packageProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
-                    } else {
-                        stopProgressBar.style.backgroundColor = '#39e961'; // Green color
-                        packageProgressBar.style.backgroundColor = '#39e961'; // Green color
+                        packageTextRow.style.position = 'relative';
+                        packageTextRow.style.top = '-25px'; // Adjust this value as needed
+                        packageTextRow.style.left = '5%'; // Adjust this value as needed
+                        packageTextRow.style.textAlign = 'center';
+                        packageTextRow.style.width = '100%';
                     }
-                } else {
-                    // If stopPerHourValue or stopsValue is 'N/A', set content to 'N/A'
-                    newTd.textContent = 'N/A';
-                }
 
-                // Append new td to current row
-                row.appendChild(newTd);
+                    // Create a new td element
+                    var newTd = document.createElement('td');
+                    newTd.setAttribute('data-v-33da10de', ''); // Set data-v attribute
+                    newTd.className = 'route-list-row__est-comp align-middle'; // Set class name
+
+                    // Perform division only if stopPerHourValue is not 'N/A' and stopsValue is not 'N/A'
+                    if (stopsPerHourStats && stopsPerHourStats.completed != 0) {
+                        // Parse values to floats and perform division
+                        var stopPerHour = parseFloat(stopsPerHourStats.completed);
+                        var stops = parseFloat(stopsValue);
+                        var result = stops / stopPerHour;
+
+                        // Convert result to time format
+                        var hours = Math.floor(result);
+                        var minutes = Math.round((result - hours) * 60);
+                        var timeString = hours + 'h ' + minutes + 'm Left';
+                        // Set content to the formatted time string
+                        newTd.textContent = timeString;
+
+                        // Update the color of the progress bar based on remaining time
+                        var stopProgressBar = stopsTd.querySelector('.progress-bar');
+                        var packageProgressBar = packagesTd.querySelector('.progress-bar');
+                        if (hours >= 10) {
+                            stopProgressBar.style.backgroundColor = '#f18383'; // Red color
+                            packageProgressBar.style.backgroundColor = '#f18383'; // Red color
+                        } else if (hours >= 8) {
+                            stopProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
+                            packageProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
+                        } else {
+                            stopProgressBar.style.backgroundColor = '#39e961'; // Green color
+                            packageProgressBar.style.backgroundColor = '#39e961'; // Green color
+                        }
+                    } else {
+                        // If stopPerHourValue or stopsValue is 'N/A', set content to 'N/A'
+                        newTd.textContent = 'N/A';
+                    }
+
+                    // Append new td to current row
+                    row.appendChild(newTd);
+                }
             });
         }
     }
 
-    // Function to update Est. To Completion values
+    //Needs redone.
+    /*// Function to update Est. To Completion values
     function updateEstToCompletionValues() {
         // Get all existing Est. To Completion cells
         var estCompCells = document.querySelectorAll('.route-list-row__est-comp');
@@ -250,15 +315,23 @@
                 cell.textContent = 'N/A';
             }
         });
-    }
+    }*/
 
     // Wait for the DOM content to load
     document.addEventListener('DOMContentLoaded', function() {
         // Add a short delay to ensure elements are fully loaded
         setTimeout(function() {
+
+            // Call our setup function first.
+            setupVue();
+
             // Call the function to add Est. To Completion column
             addEstToCompletionColumn();
+
+            //Custon notification function, really just a way to visually instantly know the userscript is running without looking at console.
             notification("Tsubaki's GroundCloud - Version 0.0.1 - Report any issues to Trevor.", "#000000", "#73c714", "#ace36d", "#89b853");
+
+            /* Needs redone.
             // Use MutationObserver to watch for changes in the table body
             var observer = new MutationObserver(function(mutationsList) {
                 for (var mutation of mutationsList) {
@@ -267,19 +340,15 @@
                         updateEstToCompletionValues();
                     }
                 }
-            });
+            });*/
 
-            // Select the table body to observe
-            var tableBody = document.querySelector('.route-table tbody');
-
+            /*Needs redone.
             // Configure and start the observer
             if (tableBody) {
                 observer.observe(tableBody, { attributes: false, childList: true, subtree: false });
-            }
+            }*/
         }, 800); // Adjust the delay as needed
     });
-
-
 
     // Navbar test, half works.
     /*GM_addStyle(`
