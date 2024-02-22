@@ -16,7 +16,7 @@ In-Progress:
 1. Ability to collapse side-nav bar at any time (Kind of done)
 2. Fix estimations for route completion, and change column data to 'Done' or something similar when route is completed.
 3. Clean up any and all parts of the code always.
-4. Stop and package count section redesign. (Almost done, feature us live but needs cleaned up)
+4. Stop and package count section redesign. (Almost done, feature is live but needs cleaned up)
 
 To-Do:
 1. ???
