@@ -19,11 +19,12 @@ In-Progress:
 4. Stop and package count section redesign. (Almost done, feature is live but needs cleaned up)
 
 To-Do:
-1. ???
+1. Detect pages, only run certain functions on certain pages.
 
 Bugs: 
 1. Filtering the terminals wont update the data
 2. If a driver finishes route and there is like 1 stop left the completion time will remain at a low number. Plan to fix this when I change the logic.
+3. Stop and package progress bars are not centered.
 
 ![1f7d7e03f9746ac59a86ac28e8df9fe9 (1)](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/3a987fd4-2de8-4bcc-a589-77e71cb47fa3)
 
