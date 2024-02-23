@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tsubaki's GroundCloud
 // @namespace    https://github.com/trevorftp
-// @version      0.0.2
+// @version      0.0.3
 // @description  Redesign GroundCloud.io
 // @author       Trevor Derifield
 // @match        https://groundcloud.io/*
@@ -465,7 +465,7 @@
                 addEstToCompletionColumn();
 
                 //Custon notification function, really just a way to visually instantly know the userscript is running without looking at console.
-                notification("Tsubaki's GroundCloud - Version 0.0.1 - Report any issues to Trevor.", "#000000", "#73c714", "#ace36d", "#89b853");
+                notification("Tsubaki's GroundCloud - Version 0.0.3 - Report any issues to Trevor.", "#000000", "#73c714", "#ace36d", "#89b853");
             } else if (checkPage('login')) {
                 customizeLoginPage();
             }
