@@ -39,6 +39,10 @@
     var overviewMap;
     var routeList;
 
+    function checkPage(page) {
+        return (window.location.href.includes(page));
+    }
+
     function setupVue() {
         // Vue Stuff..
         /*
@@ -317,19 +321,154 @@
         });
     }*/
 
+    // Function to add custom style
+    function addStyles() {
+        var customStyles = `
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            .login-container {
+                max-width: 400px;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+            .logo {
+                margin-bottom: 20px;
+            }
+            .panel-title {
+                font-size: 24px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 20px;
+            }
+            .form-control {
+                width: 100%;
+                height: 40px;
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+                font-size: 16px;
+            }
+            .btn-primary {
+                width: 100%;
+                height: 40px;
+                background-color: #007bff;
+                border: none;
+                border-radius: 5px;
+                color: #fff;
+                font-size: 16px;
+                cursor: pointer;
+            }
+        `;
+        var styleElement = document.createElement('style');
+        styleElement.textContent = customStyles;
+        document.head.appendChild(styleElement);
+    }
+
+    // Function to customize the login page
+    function customizeLoginPage() {
+        // Add custom styles
+        addStyles();
+
+        // Get CSRF token value
+        var csrfTokenInputOriginal = document.querySelector('input[name="csrfmiddlewaretoken"]');
+        var csrfTokenValue = csrfTokenInputOriginal ? csrfTokenInputOriginal.value : '';
+
+        // Create a new styled login form
+        var container = document.createElement('div');
+        container.className = 'login-container';
+
+        var logo = document.createElement('div');
+        logo.className = 'logo';
+        logo.innerHTML = '<img src="https://aethiingekaif4ua.storage.googleapis.com/dashboard/icons/logo.ff12464aa744.png" alt="GroundCloud Logo">';
+
+        var panelTitle = document.createElement('div');
+        panelTitle.className = 'panel-title';
+        panelTitle.textContent = 'Welcome Back';
+
+        var form = document.createElement('form');
+        form.action = '/dashboard/login/?next=';
+        form.method = 'post';
+
+        var csrfTokenInput = document.createElement('input');
+        csrfTokenInput.type = 'hidden';
+        csrfTokenInput.name = 'csrfmiddlewaretoken';
+        csrfTokenInput.value = csrfTokenValue; // Set the CSRF token value
+
+        var usernameInput = document.createElement('input');
+        usernameInput.type = 'text';
+        usernameInput.name = 'username';
+        usernameInput.autofocus = true;
+        usernameInput.autocomplete = 'username';
+        usernameInput.placeholder = 'Username';
+        usernameInput.className = 'form-control';
+
+        var passwordInput = document.createElement('input');
+        passwordInput.type = 'password';
+        passwordInput.name = 'password';
+        passwordInput.autocomplete = 'current-password';
+        passwordInput.placeholder = 'Password';
+        passwordInput.className = 'form-control';
+
+        var loginButton = document.createElement('button');
+        loginButton.type = 'submit';
+        loginButton.textContent = 'Login';
+        loginButton.className = 'btn btn-primary';
+
+        form.append(csrfTokenInput, usernameInput, passwordInput, loginButton);
+        container.append(logo, panelTitle, form);
+
+        // Function to check if the page contains the incorrect password error message
+        function isIncorrectPassword() {
+            return document.querySelector('.alert.alert-danger ul.errorlist.nonfield li') !== null;
+        }
+
+        // Display error message if the password is incorrect
+        if (isIncorrectPassword()) {
+            var errorContainer = document.createElement('div');
+            errorContainer.className = 'error-message';
+            errorContainer.textContent = 'Incorrect username or password. Please try again.';
+            container.appendChild(errorContainer);
+        }
+
+        // Replace the existing login container with the new styled one
+        var existingContainer = document.querySelector('.p-t-lg.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2');
+        existingContainer.parentNode.replaceChild(container, existingContainer);
+
+        // Add background image to the login page
+        document.body.style.backgroundImage = 'url("https://papers.co/wallpaper/papers.co-vt06-abstract-art-color-basic-background-pattern-23-wallpaper.jpg")';
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundRepeat = 'no-repeat';
+    }
+
     // Wait for the DOM content to load
     document.addEventListener('DOMContentLoaded', function() {
         // Add a short delay to ensure elements are fully loaded
         setTimeout(function() {
+            if (checkPage('dashboard') && !checkPage('login')) {
+                // Call our setup function first.
+                setupVue();
 
-            // Call our setup function first.
-            setupVue();
+                // Call the function to add Est. To Completion column
+                addEstToCompletionColumn();
 
-            // Call the function to add Est. To Completion column
-            addEstToCompletionColumn();
-
-            //Custon notification function, really just a way to visually instantly know the userscript is running without looking at console.
-            notification("Tsubaki's GroundCloud - Version 0.0.1 - Report any issues to Trevor.", "#000000", "#73c714", "#ace36d", "#89b853");
+                //Custon notification function, really just a way to visually instantly know the userscript is running without looking at console.
+                notification("Tsubaki's GroundCloud - Version 0.0.1 - Report any issues to Trevor.", "#000000", "#73c714", "#ace36d", "#89b853");
+            } else if (checkPage('login')) {
+                customizeLoginPage();
+            }
 
             /* Needs redone.
             // Use MutationObserver to watch for changes in the table body
@@ -347,7 +486,7 @@
             if (tableBody) {
                 observer.observe(tableBody, { attributes: false, childList: true, subtree: false });
             }*/
-        }, 800); // Adjust the delay as needed
+        }, 1000); // Adjust the delay as needed
     });
 
     // Navbar test, half works.
