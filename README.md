@@ -22,7 +22,7 @@ As stated the script is a work in progress, I will always push out my updates ev
 1. Always be able to collapse sidebar. (Code is there just need to make it work)
 2. ???
 
-**Bugs: ** <br />
+**Bugs:** <br />
 ~~1. Table will revert to original data and look when you select a terminal, refresh the page to get the look back. (I just need to detect this and update my data)~~ <br />
 2. The new stop and package bars are not centered vertically! <br />
 3. Time to completion estimates will sit at a low number if not all of the stops are "delivered". <br />
