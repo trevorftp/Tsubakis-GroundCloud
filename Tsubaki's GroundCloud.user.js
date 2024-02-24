@@ -503,7 +503,6 @@
         var vueselect = tselect.$children.find(child => child.$options.name === 'VueSelect')
         // This saved me: https://stackoverflow.com/questions/49755618/how-can-i-make-a-click-event-on-v-select
         vueselect.$on('input', function() {
-            console.log('Option clicked');
             setTimeout(function() {
               refreshTableData();
             }, 50);
@@ -526,7 +525,7 @@
 
                 // Custon notification function, really just a way to visually instantly know the userscript is running without looking at console.
                 notification("Tsubaki's GroundCloud - Version 0.0.3 - Report any issues to Trevor.", "#000000", "#73c714", "#ace36d", "#89b853");
-              
+
             } else if (checkPage('dashboard/login')) {
                 customizeLoginPage();
             } else if (checkPage('dashboard/users/password_reset')) {
