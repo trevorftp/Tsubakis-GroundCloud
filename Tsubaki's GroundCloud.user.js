@@ -29,7 +29,7 @@
 
 (function() {
     'use strict';
-    
+
     console.log('Tsubakis GroundCloud Script has ran!');
 
     var appRoot;
@@ -153,6 +153,22 @@
         }
     }
 
+    function refreshTableData() {
+        // Find all table rows
+        var tableRows = document.querySelectorAll('.route-list-row__row');
+
+        // Iterate through each table row
+        tableRows.forEach(function(row, index) {
+            // Check if the custom row already exists
+            var estCompRow = row.querySelector('.route-list-row__est-comp');
+
+            // If the custom row doesn't exist, add it back
+            if (!estCompRow) {
+                addEstToCompletionColumn();
+            }
+        });
+    }
+
     // Function to add the 'Est. To Completion' column to the table
     function addEstToCompletionColumn() {
         // Select the header row element
@@ -160,13 +176,6 @@
 
         // Check if the header row exists
         if (headerRow) {
-            // Add custom header.
-            var estCompHead = 'Est. To Completion';
-            var estCompTh = document.createElement('th');
-            estCompTh.textContent = estCompHead;
-            estCompTh.setAttribute('data-v-33da10de', ''); // Set data-v attribute
-            headerRow.appendChild(estCompTh);
-
             // Select the specific th element for the "Name" header
             var nameHeader = headerRow.querySelector('th[data-v-33da10de=""]');
 
@@ -176,11 +185,22 @@
                 nameHeader.textContent = 'Work Area';
             }
 
+            // Check if the custom header already exists
+            if (!headerRow.querySelector('th[data-v-33da10de=""][data-sortby="Completion"]')) {
+                // Add custom header.
+                var estCompHead = 'Est. To Completion';
+                var estCompTh = document.createElement('th');
+                estCompTh.textContent = estCompHead;
+                estCompTh.setAttribute('data-v-33da10de', ''); // Set data-v attribute
+                estCompTh.setAttribute('data-sortby', 'Completion'); // Set data-sortby attribute to match sorting functionality
+                headerRow.appendChild(estCompTh);
+            }
+
             // Find all table rows
             var tableRows = document.querySelectorAll('.route-list-row__row');
 
             // Iterate through each table row
-            routeList.routeDays.forEach(function(routeDay, index) {
+            routeList.filteredRouteDays.forEach(function(routeDay, index) {
                 // Get the corresponding table row
                 var row = tableRows[index];
 
@@ -225,153 +245,117 @@
                         packageTextRow.style.width = '100%';
                     }
 
-                    // Create a new td element
-                    var newTd = document.createElement('td');
-                    newTd.setAttribute('data-v-33da10de', ''); // Set data-v attribute
-                    newTd.className = 'route-list-row__est-comp align-middle'; // Set class name
+                    // Check if the custom row already exists
+                    var estCompRow = row.querySelector('.route-list-row__est-comp');
 
-                    // Perform division only if stopPerHourValue is not 'N/A' and stopsValue is not 'N/A'
-                    if (stopsPerHourStats && stopsPerHourStats.completed != 0) {
-                        // Parse values to floats and perform division
-                        var stopPerHour = parseFloat(stopsPerHourStats.completed);
-                        var stops = parseFloat(stopsValue);
-                        var result = stops / stopPerHour;
+                    // If the custom row doesn't exist, add it back
+                    if (!estCompRow) {
+                        // Create a new td element
+                        var newTd = document.createElement('td');
+                        newTd.setAttribute('data-v-33da10de', ''); // Set data-v attribute
+                        newTd.className = 'route-list-row__est-comp align-middle'; // Set class name
 
-                        // Convert result to time format
-                        var hours = Math.floor(result);
-                        var minutes = Math.round((result - hours) * 60);
-                        var timeString = hours + 'h ' + minutes + 'm Left';
-                        // Set content to the formatted time string
-                        newTd.textContent = timeString;
+                        // Perform division only if stopPerHourValue is not 'N/A' and stopsValue is not 'N/A'
+                        if (stopsPerHourStats && stopsPerHourStats.completed != 0) {
+                            // Parse values to floats and perform division
+                            var stopPerHour = parseFloat(stopsPerHourStats.completed);
+                            var stops = parseFloat(stopsValue);
+                            var result = stops / stopPerHour;
 
-                        // Update the color of the progress bar based on remaining time
-                        var stopProgressBar = stopsTd.querySelector('.progress-bar');
-                        var packageProgressBar = packagesTd.querySelector('.progress-bar');
-                        if (hours >= 10) {
-                            stopProgressBar.style.backgroundColor = '#f18383'; // Red color
-                            packageProgressBar.style.backgroundColor = '#f18383'; // Red color
-                        } else if (hours >= 8) {
-                            stopProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
-                            packageProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
+                            // Convert result to time format
+                            var hours = Math.floor(result);
+                            var minutes = Math.round((result - hours) * 60);
+                            var timeString = hours + 'h ' + minutes + 'm Left';
+
+                            // Set content to the formatted time string
+                            newTd.textContent = timeString;
+
+                            // Update the color of the progress bar based on remaining time
+                            var stopProgressBar = stopsTd.querySelector('.progress-bar');
+                            var packageProgressBar = packagesTd.querySelector('.progress-bar');
+                            if (hours >= 10) {
+                                stopProgressBar.style.backgroundColor = '#f18383'; // Red color
+                                packageProgressBar.style.backgroundColor = '#f18383'; // Red color
+                            } else if (hours >= 8) {
+                                stopProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
+                                packageProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
+                            } else {
+                                stopProgressBar.style.backgroundColor = '#39e961'; // Green color
+                                packageProgressBar.style.backgroundColor = '#39e961'; // Green color
+                            }
                         } else {
-                            stopProgressBar.style.backgroundColor = '#39e961'; // Green color
-                            packageProgressBar.style.backgroundColor = '#39e961'; // Green color
+                            // If stopPerHourValue or stopsValue is 'N/A', set content to 'N/A'
+                            newTd.textContent = 'N/A';
                         }
-                    } else {
-                        // If stopPerHourValue or stopsValue is 'N/A', set content to 'N/A'
-                        newTd.textContent = 'N/A';
-                    }
 
-                    // Append new td to current row
-                    row.appendChild(newTd);
+                        // Append new td to current row
+                        row.appendChild(newTd);
+                    }
                 }
             });
         }
     }
 
-    //Needs redone.
-    /*// Function to update Est. To Completion values
-    function updateEstToCompletionValues() {
-        // Get all existing Est. To Completion cells
-        var estCompCells = document.querySelectorAll('.route-list-row__est-comp');
-
-        // Iterate through each Est. To Completion cell
-        estCompCells.forEach(function(cell) {
-            // Get the corresponding stop per hour and stops values
-            var stopPerHourTd = cell.closest('.route-list-row__row').querySelector('.route-list-row__stop-per-hour.align-middle');
-            var stopPerHourValue = stopPerHourTd.textContent.trim();
-
-            var stopsTd = cell.closest('.route-list-row__row').querySelector('.route-list-row__stops.align-middle');
-            var stopsValue = stopsTd.querySelector('.col-xl-6.text-xl-right');
-            var stopsText = stopsValue ? stopsValue.textContent.trim() : 'N/A';
-            // If stopsValue is 'N/A', set stopsText to 'N/A'
-            if (stopsText === 'N/A') {
-                stopsValue = stopsText;
-            } else {
-                stopsValue = stopsText.replace(/[^\d.-]/g, '');
-            }
-
-            // Perform division only if stopPerHourValue is not 'N/A' and stopsValue is not 'N/A'
-            if (stopPerHourValue !== 'N/A' && stopsValue !== 'N/A') {
-                // Parse values to floats and perform division
-                var stopPerHour = parseFloat(stopPerHourValue);
-                var stops = parseFloat(stopsValue);
-                var result = stops / stopPerHour;
-
-                // Convert result to time format
-                var hours = Math.floor(result);
-                var minutes = Math.round((result - hours) * 60);
-                var timeString = hours + 'h ' + minutes + 'm Left';
-                // Set content to the formatted time string
-                cell.textContent = timeString;
-
-                // Update the color of the progress bar based on remaining time
-                var progressBar = stopsTd.querySelector('.progress-bar');
-                if (hours >= 10) {
-                    progressBar.style.backgroundColor = '#a72828'; // Red color
-                } else if (hours >= 8) {
-                    progressBar.style.backgroundColor = '#f5a644'; // Yellow color
-                } else {
-                    progressBar.style.backgroundColor = '#28a745'; // Green color
-                }
-            } else {
-                // If stopPerHourValue or stopsValue is 'N/A', set content to 'N/A'
-                cell.textContent = 'N/A';
-            }
-        });
-    }*/
-
-    // Function to add custom style
     function addStyles() {
         var customStyles = `
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background-color: #f9f9f9;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
-            .login-container {
-                max-width: 400px;
-                padding: 20px;
-                background-color: #fff;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                text-align: center;
-            }
-            .logo {
-                margin-bottom: 20px;
-            }
-            .panel-title {
-                font-size: 24px;
-                font-weight: bold;
-                color: #333;
-                margin-bottom: 20px;
-            }
-            .form-control {
-                width: 100%;
-                height: 40px;
-                padding: 10px;
-                margin-bottom: 15px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                box-sizing: border-box;
-                font-size: 16px;
-            }
-            .btn-primary {
-                width: 100%;
-                height: 40px;
-                background-color: #007bff;
-                border: none;
-                border-radius: 5px;
-                color: #fff;
-                font-size: 16px;
-                cursor: pointer;
-            }
-        `;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .panel-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            width: 100%;
+            height: 40px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .btn-primary {
+            width: 100%;
+            height: 40px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-forgot {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .error-message {
+            color: #a94442;
+            margin-top: 10px;
+        }
+    `;
         var styleElement = document.createElement('style');
         styleElement.textContent = customStyles;
         document.head.appendChild(styleElement);
@@ -386,7 +370,7 @@
         var csrfTokenInputOriginal = document.querySelector('input[name="csrfmiddlewaretoken"]');
         var csrfTokenValue = csrfTokenInputOriginal ? csrfTokenInputOriginal.value : '';
 
-        // Create a new styled login form
+        /// Create a new styled login form
         var container = document.createElement('div');
         container.className = 'login-container';
 
@@ -427,8 +411,14 @@
         loginButton.textContent = 'Login';
         loginButton.className = 'btn btn-primary';
 
+        // Forgot password link
+        var forgotPasswordLink = document.createElement('a');
+        forgotPasswordLink.href = 'https://groundcloud.io/dashboard/users/password_reset';
+        forgotPasswordLink.textContent = 'Forgot Password?';
+        forgotPasswordLink.className = 'btn-forgot';
+
         form.append(csrfTokenInput, usernameInput, passwordInput, loginButton);
-        container.append(logo, panelTitle, form);
+        container.append(logo, panelTitle, form, forgotPasswordLink);
 
         // Function to check if the page contains the incorrect password error message
         function isIncorrectPassword() {
@@ -453,51 +443,95 @@
         document.body.style.backgroundRepeat = 'no-repeat';
     }
 
+    function customizeForgotPasswordPage() {
+        // Add custom styles
+        addStyles();
+
+        // Get CSRF token value
+        var csrfTokenInputOriginal = document.querySelector('input[name="csrfmiddlewaretoken"]');
+        var csrfTokenValue = csrfTokenInputOriginal ? csrfTokenInputOriginal.value : '';
+
+        // Create a new styled forgot password form
+        var container = document.createElement('div');
+        container.className = 'login-container';
+
+        var logo = document.createElement('div');
+        logo.className = 'logo';
+        logo.innerHTML = '<img src="https://aethiingekaif4ua.storage.googleapis.com/dashboard/icons/logo.ff12464aa744.png" alt="GroundCloud Logo">';
+
+        var panelTitle = document.createElement('div');
+        panelTitle.className = 'panel-title';
+        panelTitle.textContent = 'Reset Your Password';
+
+        var form = document.createElement('form');
+        form.action = '/dashboard/users/password_reset';
+        form.method = 'post';
+
+        var csrfTokenInput = document.createElement('input');
+        csrfTokenInput.type = 'hidden';
+        csrfTokenInput.name = 'csrfmiddlewaretoken';
+        csrfTokenInput.value = csrfTokenValue; // Set the CSRF token value
+
+        var emailInput = document.createElement('input');
+        emailInput.type = 'email';
+        emailInput.name = 'email';
+        emailInput.autofocus = true;
+        emailInput.autocomplete = 'email';
+        emailInput.placeholder = 'Email';
+        emailInput.className = 'form-control';
+
+        var submitButton = document.createElement('button');
+        submitButton.type = 'submit';
+        submitButton.textContent = 'Submit';
+        submitButton.className = 'btn btn-primary';
+
+        form.append(csrfTokenInput, emailInput, submitButton);
+        container.append(logo, panelTitle, form);
+
+        // Replace the existing login container with the new styled one
+        var existingContainer = document.querySelector('.p-t-lg.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2');
+        existingContainer.parentNode.replaceChild(container, existingContainer);
+
+        // Add background image to the forgot password page
+        document.body.style.backgroundImage = 'url("https://papers.co/wallpaper/papers.co-vt06-abstract-art-color-basic-background-pattern-23-wallpaper.jpg")';
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundRepeat = 'no-repeat';
+    }
+
+      function detectTerminalSelect() {
+        var tselect = overview.$children.find(child => child.$options.name === 'TerminalSelect')
+        var vueselect = tselect.$children.find(child => child.$options.name === 'VueSelect')
+        // This saved me: https://stackoverflow.com/questions/49755618/how-can-i-make-a-click-event-on-v-select
+        vueselect.$on('input', function() {
+            console.log('Option clicked');
+            setTimeout(function() {
+              refreshTableData();
+            }, 50);
+        });
+    }
+
     // Wait for the DOM content to load
     document.addEventListener('DOMContentLoaded', function() {
         // Add a short delay to ensure elements are fully loaded
         setTimeout(function() {
-            if (checkPage('dashboard') && !checkPage('login')) {
+            if (checkPage('dashboard') && !checkPage('dashboard/login') && !checkPage('dashboard/users/password_reset')) {
                 // Call our setup function first.
                 setupVue();
 
                 // Call the function to add Est. To Completion column
                 addEstToCompletionColumn();
 
-                //Custon notification function, really just a way to visually instantly know the userscript is running without looking at console.
+                // Detect when we click a new option in <VueSelect>
+                detectTerminalSelect();
+
+                // Custon notification function, really just a way to visually instantly know the userscript is running without looking at console.
                 notification("Tsubaki's GroundCloud - Version 0.0.3 - Report any issues to Trevor.", "#000000", "#73c714", "#ace36d", "#89b853");
-            } else if (checkPage('login')) {
+              
+            } else if (checkPage('dashboard/login')) {
                 customizeLoginPage();
+            } else if (checkPage('dashboard/users/password_reset')) {
+                customizeForgotPasswordPage();
             }
-
-            /* Needs redone.
-            // Use MutationObserver to watch for changes in the table body
-            var observer = new MutationObserver(function(mutationsList) {
-                for (var mutation of mutationsList) {
-                    if (mutation.type === 'childList') {
-                        // Call the function to update Est. To Completion values whenever the table body is updated
-                        updateEstToCompletionValues();
-                    }
-                }
-            });*/
-
-            /*Needs redone.
-            // Configure and start the observer
-            if (tableBody) {
-                observer.observe(tableBody, { attributes: false, childList: true, subtree: false });
-            }*/
         }, 1000); // Adjust the delay as needed
     });
-
-    // Navbar test, half works.
-    /*GM_addStyle(`
-        @media (min-width: 0px) {
-            .nav-toggler-md {
-                display: block !important;
-            }
-        }
-        @media (min-width: 0px) { #wrapper.toggled #sidebar-wrapper { width: 0px; } }
-        @media (min-width: 0px) { #wrapper.toggled #page-content-wrapper { position: relative; margin-right: 0; }
-        @media (min-width: 0px) { #wrapper, #wrapper.toggled { padding-left: 0px; }
-    `);*/
 })();
