@@ -13,23 +13,27 @@ As stated the script is a work in progress, I will always push out my updates ev
 **Current "Features":**
 1. Login screen revamped.
 2. New row (Est. To Completeion) added to the dashboard table. This gives you an hour and minute estimate of that routes completeion.
-3. Stop Progress bar redesign, thicker bars with stop data inside of them.
-4. Stop progress bars are color coded based on that routes time to completeion.
-5. Renamed "Name" row to "Work Area".
-6. Custom notifications with X, really just used to visually show the script is working.
+3. Increased information added to dashboard maps driver icons when clicked.
+4. Stop Progress bar redesign, thicker bars with stop data inside of them.
+5. Stop progress bars are color coded based on that routes time to completeion.
+6. Renamed "Name" row to "Work Area".
+7. Custom notifications with X, really just used to visually show the script is working.
 
 **Future "Features":**
 1. Always be able to collapse sidebar. (Code is there just need to make it work)
-2. ???
+2. Route page stop icons replaced and color coded to sequence color.
+3. ???
 
 **Bugs:** <br />
 ~~1. Table will revert to original data and look when you select a terminal, refresh the page to get the look back. (I just need to detect this and update my data)~~ <br />
 2. The new stop and package bars are not centered vertically! <br />
 3. Time to completion estimates will sit at a low number if not all of the stops are "delivered". <br />
 4. Login page sometimes doesnt update? Not a big deal. <br />
+5. Driver icon dialogs update and original data is added after the custom data.
 
 And I am sure there are more bugs, just nothing I have found. It's not perfect.
 
 ![1f7d7e03f9746ac59a86ac28e8df9fe9 (1)](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/3a987fd4-2de8-4bcc-a589-77e71cb47fa3)
+![Capture](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/233259ab-dff7-4726-ab2d-730088b20ec9)
 ![Screenshot 2024-02-23 125210](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/626668d6-6d55-4246-8efb-3f5c4f336a49)
 
