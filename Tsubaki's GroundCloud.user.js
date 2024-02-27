@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tsubaki's GroundCloud
 // @namespace    https://github.com/trevorftp
-// @version      0.0.3
+// @version      0.0.4
 // @description  Redesign GroundCloud.io
 // @author       Trevor Derifield
 // @match        https://groundcloud.io/*
@@ -167,6 +167,64 @@
                 addEstToCompletionColumn();
             }
         });
+    }
+
+      function editOverviewMap() {
+        // Select all circles
+        var circles = document.querySelectorAll('div[role="button"][style*="width: 50px;"][style*="height: 50px;"]');
+
+        // Add click event listener to each circle
+        circles.forEach(function(circle) {
+            circle.addEventListener('click', function() {
+                // Get the abbreviation from aria-label attribute
+                var ariaLabel = circle.getAttribute('aria-label');
+
+                // Find the corresponding dialog
+                var dialog = document.querySelector('.gm-style-iw-d');
+
+                // Edit the content of the dialog based on abbreviation
+                if (dialog && ariaLabel) {
+                    // Cycle through each driver
+                    for (var i = 0; i < overviewMap.driversWithLastLocations.length; i++) {
+                        var driver = overviewMap.driversWithLastLocations[i];
+                        var fullNameAbbreviation = driver.user.first_name.charAt(0) + driver.user.last_name.charAt(0);
+
+                        // Check if the abbreviation matches the ariaLabel
+                        if (fullNameAbbreviation === ariaLabel) {
+                            // Find the corresponding routeDay
+                            for (var j = 0; j < overviewMap.routeDays.length; j++) {
+                                var routeDay = overviewMap.routeDays[j];
+                                if (driver.last_location.route_day === routeDay.id) {
+                                    var routeListRoute = routeList.routeDays[j];
+                                    var stopStats = routeList.stopStatsByRouteDay[routeDay.id];
+                                    // Add additional information from routeDay to the dialog
+                                    var newContent = `WA: ${routeListRoute.route.name}<br>Stops: ${stopStats.completed} / ${stopStats.total} (${stopStats.total - stopStats.completed} Left)<br>Est. Miles: ${parseFloat(routeDay.miles_total.toFixed())}`;
+                                    dialog.insertAdjacentHTML('beforeend', newContent);
+                                    break; // Exit the loop once a match is found
+                                }
+                            }
+                            break; // Exit the loop once a match is found
+                        }
+                    }
+                }
+            });
+        });
+
+        // Create a Mutation Observer instance
+        var observer = new MutationObserver(function(mutationsList, observer) {
+            // Check each mutation in the list
+            for (var mutation of mutationsList) {
+                // Check if the mutation target is the dialog element
+                if (mutation.target.classList.contains('gm-style-iw-d')) {
+                    // Stop observing mutations since the content has been added
+                    observer.disconnect();
+                    break; // Exit the loop since we've handled the mutation
+                }
+            }
+        });
+
+        // Start observing mutations on the document body
+        observer.observe(document.body, { childList: true, subtree: true });
     }
 
     // Function to add the 'Est. To Completion' column to the table
@@ -497,6 +555,53 @@
         document.body.style.backgroundSize = 'cover';
         document.body.style.backgroundRepeat = 'no-repeat';
     }
+      //Future feature ;)
+      /*function customizeRoutePage() {
+          var routeAppRoot = document.querySelector('#route_details_viewapp');
+
+          if (routeAppRoot) {
+              // Access the Vue instance
+              var routeVueInstance = routeAppRoot.__vue__;
+              console.log('Vue detected and found: ', routeVueInstance);
+
+              // Traverse the Vue instance hierarchy to reach our components
+              var rAuthWrapper = routeVueInstance.$children.find(child => child.$options.name === 'AuthWrapper');
+              var routeDetails = rAuthWrapper.$children.find(child => child.$options.name === 'RouteDetails');
+
+              // Check if stopPaneStopList exists and is an array before iterating over it
+              if (Array.isArray(routeDetails.stopPaneStopList)) {
+                  // Get all div elements with specific styles
+                  var divsWithSpecificStyles = document.querySelectorAll('div[style*="z-index"][style*="width: 38px;"][style*="height: 38px;"]');
+
+                  // Cycle through each div element with specific styles
+                  divsWithSpecificStyles.forEach(function(div) {
+                      // Extract the z-index value from the style attribute
+                      var zIndex = div.style.zIndex;
+
+                      // Iterate over stopPaneStopList to find matching nav_seq
+                      routeDetails.stopPaneStopList.forEach(function(stop) {
+                          if (stop.nav_seq == zIndex) {
+                              // Remove the img element inside the div
+                              //div.innerHTML = '';
+
+                              // Set the background color to white
+                              div.style.backgroundColor = '#fff';
+
+                              // Add additional CSS properties
+                              div.style.border = '1px solid red';
+                              div.style.borderRadius = '50%';
+                              div.style.webkitBorderRadius = '50%';
+                              div.style.mozBorderRadius = '50%';
+                          }
+                      });
+                  });
+              } else {
+                  console.log('stopPaneStopList is not an array or does not exist.');
+              }
+          } else {
+              console.log('The Vue instance could not be found.');
+          }
+      }*/
 
       function detectTerminalSelect() {
         var tselect = overview.$children.find(child => child.$options.name === 'TerminalSelect')
@@ -513,7 +618,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Add a short delay to ensure elements are fully loaded
         setTimeout(function() {
-            if (checkPage('dashboard') && !checkPage('dashboard/login') && !checkPage('dashboard/users/password_reset')) {
+            if (checkPage('dashboard') && !checkPage('dashboard/login') && !checkPage('dashboard/users/password_reset') && !checkPage('days')) {
                 // Call our setup function first.
                 setupVue();
 
@@ -524,13 +629,19 @@
                 detectTerminalSelect();
 
                 // Custon notification function, really just a way to visually instantly know the userscript is running without looking at console.
-                notification("Tsubaki's GroundCloud - Version 0.0.3 - Report any issues to Trevor.", "#000000", "#73c714", "#ace36d", "#89b853");
-
+                notification("Tsubaki's GroundCloud - Version 0.0.4 - Report any issues to Trevor.", "#000000", "#73c714", "#ace36d", "#89b853");
+              
+                //Edits the driver circles on the dashboard map.
+                editOverviewMap();
             } else if (checkPage('dashboard/login')) {
                 customizeLoginPage();
             } else if (checkPage('dashboard/users/password_reset')) {
                 customizeForgotPasswordPage();
+            } else if (checkPage('days')) {
+              setTimeout(function() {
+                //customizeRoutePage();
+              }, 2000);
             }
-        }, 1000); // Adjust the delay as needed
+        }, 1500); // Adjust the delay as needed
     });
 })();
