@@ -32,7 +32,7 @@ As stated the script is a work in progress, I will always push out my updates ev
   3.) Time to completion estimates will sit at a low number if not all of the stops are "delivered". <br />
   4.) Login page sometimes doesnt update? Not a big deal. <br />
   5.) Driver icon dialogs update and original data is added after the custom data. <br />
-  6.) The topbar structure is slightly different on some pages. (Drivers, Fleet Map, CSA, Inspection Settings, Route Schedule, Training Schedule, Completed Tests, Settings, Contract IDs, Your Account, ) This causes issues on 10 of the 48 pages with the redesigned topbar. (High priority) <br />
+  ~~6.) The topbar structure is slightly different on some pages. (Drivers, Fleet Map, CSA, Inspection Settings, Route Schedule, Training Schedule, Completed Tests, Settings, Contract IDs, Your Account, ) This causes issues on 10 of the 48 pages with the redesigned topbar. (High priority)~~ <br />
   7.) New sidebar icon slightly hard to click. <br />
 
 And I am sure there are more bugs, just nothing I have found. It's not perfect.
