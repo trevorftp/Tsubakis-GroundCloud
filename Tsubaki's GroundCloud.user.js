@@ -393,9 +393,13 @@
         var sidebarToggleBtn;
 
         // Check if both elements exist
-        if (topbarDiv && dashboardDiv) {
-            var firstChild = dashboardDiv.firstElementChild;
-            dashboardDiv.insertBefore(topbarDiv, firstChild);
+        if (topbarDiv) {
+            var firstChild = dashboardDiv ? dashboardDiv.firstElementChild : document.body.firstElementChild;
+            if (dashboardDiv) {
+                dashboardDiv.insertBefore(topbarDiv, firstChild);
+            } else {
+                document.body.insertBefore(topbarDiv, firstChild);
+            }
 
             var toggleButton = topbarDiv.querySelector('.nav-toggler.nav-toggler-md.sidebar-toggler');
             if (toggleButton) {
@@ -440,11 +444,14 @@
         // Add custom styles
         var style = document.createElement('style');
         style.textContent = `
-          .topbar.legacy {
+          .dashhead::before, .dashhead::after {
+              display: none;
+          }
+          .topbar {
               margin-left: 0px;
               box-shadow:0 1px 2px rgba(0,0,0,0.2);
           }
-          .topbar {
+          .topbar.legacy {
               margin-left: 0px;
               box-shadow:0 1px 2px rgba(0,0,0,0.2);
           }
