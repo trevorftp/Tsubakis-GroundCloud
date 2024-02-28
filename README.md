@@ -31,8 +31,8 @@ As stated the script is a work in progress, I will always push out my updates ev
   2.) The new stop and package bars are not centered vertically! <br />
   3.) Time to completion estimates will sit at a low number if not all of the stops are "delivered". <br />
   4.) Login page sometimes doesnt update? Not a big deal. <br />
-  5.) Driver icon dialogs update and original data is added after the custom data.<br />
-  6.) The topbar structure is slightly different on some pages? This causes issues on select pages with the redesigned topbar. (High priority)
+  5.) Driver icon dialogs update and original data is added after the custom data. <br />
+  6.) The topbar structure is slightly different on some pages? This causes issues on select pages with the redesigned topbar. (High priority) <br />
   7.) New sidebar icon slightly hard to click. <br />
 
 And I am sure there are more bugs, just nothing I have found. It's not perfect.
