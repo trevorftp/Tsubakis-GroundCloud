@@ -254,16 +254,13 @@
                         stopContainer.appendChild(stopTextRow);
                         packageContainer.appendChild(packageTextRow);
 
-                        // Adjust the positioning of the text row
-                        stopTextRow.style.position = 'relative';
-                        stopTextRow.style.top = '-25px';
-                        stopTextRow.style.left = '5%';
+                        stopTextRow.style.marginLeft = '0px';
+                        stopTextRow.style.marginTop = '-25px';
                         stopTextRow.style.textAlign = 'center';
                         stopTextRow.style.width = '100%';
 
-                        packageTextRow.style.position = 'relative';
-                        packageTextRow.style.top = '-25px';
-                        packageTextRow.style.left = '5%';
+                        packageTextRow.style.marginLeft = '0px';
+                        packageTextRow.style.marginTop = '-25px';
                         packageTextRow.style.textAlign = 'center';
                         packageTextRow.style.width = '100%';
                     }
@@ -392,6 +389,9 @@
         var dashboardDiv = document.querySelector('.dashboard');
         var sidebarToggleBtn;
 
+        // hehe.
+        document.querySelector('.nav-item.nav-item__upgrade_to_pro_tier').remove();
+
         // Check if both elements exist
         if (topbarDiv) {
             var firstChild = dashboardDiv ? dashboardDiv.firstElementChild : document.body.firstElementChild;
@@ -447,23 +447,53 @@
           .dashhead::before, .dashhead::after {
               display: none;
           }
+          a {
+              color: #0e5777;
+          }
+          .body {
+              color: #0d0a05;
+              background-color: #fcfaf6;
+          }
           .topbar {
               margin-left: 0px;
               box-shadow:0 1px 2px rgba(0,0,0,0.2);
+              padding: 10px 10px 0 15px;
+              background: #fcfaf6;
           }
           .topbar.legacy {
               margin-left: 0px;
               box-shadow:0 1px 2px rgba(0,0,0,0.2);
+              padding: 10px 10px 0 15px;
+          }
+          .topbar .dashhead .dashhead-subtitle {
+              color: #0D0A05;
           }
           #sidebar-wrapper {
               margin-top: 78px;
+              background: #f4f2ee;
           }
           .dashhead {
               display: flex;
               align-items: center;
               justify-content: space-between;
           }
-
+          .card {
+              background-color: #f4f2ee;
+          }
+          .nav-pills .nav-item.active:not(.nav-nested) .nav-link, .nav-pills .nav-item:not(.nav-nested) .nav-link.active {
+              color: #694d89;
+              background-color: #cde8eb;
+              border-radius: 25px;
+          }
+          .sidebar-nav li a {
+              color: #504866;
+              font-weight: 300;
+          }
+          .sidebar-nav li a:hover {
+              color: #694d89;
+              background-color: #ffffff00;
+              font-weight: 500;
+          }
           .sidebar-toggle-button {
               background-color: transparent;
               border: none;
