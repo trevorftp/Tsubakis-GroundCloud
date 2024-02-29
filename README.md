@@ -19,7 +19,7 @@ As stated the script is a work in progress, I will always push out my updates ev
 7.) Renamed "Name" row to "Work Area". <br />
 8.) Custom notifications with X, really just used to visually show the script is working. <br />
 9.) Topbar redesigned + sidebar collapsible at all times. <br />
-10.) CSS / color overhaul. <br />
+10.) CSS / color overhaul.  (Lighthouse scored new page a 98, vs the previous score of 84).<br />
 
 **Future Plans:** <br />
   ~~1.) Always be able to collapse sidebar. (Code is there just need to make it work)~~ <br />
