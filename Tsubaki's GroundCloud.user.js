@@ -76,6 +76,7 @@
         closeButton.className = 'close';
         closeButton.setAttribute('data-v-33da10de', ''); // Set data-v attribute
         closeButton.innerHTML = '&times;'; // Use HTML entity for X
+        closeButton.style.color = '#FFF';
         notificationDiv.appendChild(closeButton);
 
         // Create a span element for the icon
@@ -216,7 +217,7 @@
                 var estCompTh = document.createElement('th');
                 estCompTh.textContent = estCompHead;
                 estCompTh.setAttribute('data-v-33da10de', ''); // Set data-v attribute
-                estCompTh.setAttribute('data-sortby', 'Completion'); // Set data-sortby attribute to match sorting functionality
+                //estCompTh.setAttribute('data-sortby', 'Completion'); // Set data-sortby attribute to match sorting functionality
                 headerRow.appendChild(estCompTh);
             }
 
@@ -295,14 +296,14 @@
                             var stopProgressBar = stopsTd.querySelector('.progress-bar');
                             var packageProgressBar = packagesTd.querySelector('.progress-bar');
                             if (hours >= 10) {
-                                stopProgressBar.style.backgroundColor = '#f18383'; // Red color
-                                packageProgressBar.style.backgroundColor = '#f18383'; // Red color
+                                stopProgressBar.style.backgroundColor = '#f16e6e'; // Red color
+                                packageProgressBar.style.backgroundColor = '#f16e6e'; // Red color
                             } else if (hours >= 8) {
-                                stopProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
-                                packageProgressBar.style.backgroundColor = '#f7b461'; // Yellow color
+                                stopProgressBar.style.backgroundColor = '#f9c939'; // Yellow color
+                                packageProgressBar.style.backgroundColor = '#f9c939'; // Yellow color
                             } else {
-                                stopProgressBar.style.backgroundColor = '#39e961'; // Green color
-                                packageProgressBar.style.backgroundColor = '#39e961'; // Green color
+                                stopProgressBar.style.backgroundColor = '#34bddf'; // Green color
+                                packageProgressBar.style.backgroundColor = '#34bddf'; // Green color
                             }
                         } else {
                             // If stopPerHourValue or stopsValue is 'N/A', set content to 'N/A'
@@ -415,6 +416,7 @@
                 if (!sidebarToggleBtn) {
                     sidebarToggleBtn = document.createElement('button');
                     sidebarToggleBtn.classList.add('sidebar-toggle-button');
+                    sidebarToggleBtn.ariaLabel = 'Toggle Sidebar';
                     dashhead.insertBefore(sidebarToggleBtn, dashhead.firstChild);
                 }
             }
@@ -487,6 +489,22 @@
           .card {
               background-color: #f4f2ee;
           }
+          .card.mx-1 {
+              background-color: #f0eee9;
+          }
+          button.btn.btn-secondary.btn-xs {
+              background-color: #c0e8ef;
+              color: #0D0A05;
+          }
+          .progress {
+              background-color: #dfdedf;
+          }
+          .progress-bar {
+              background-color: #41a0cf !important;
+          }
+          .table {
+              color: #0D0A05;
+          }
           .nav-pills .nav-item.active:not(.nav-nested) .nav-link, .nav-pills .nav-item:not(.nav-nested) .nav-link.active {
               color: #694d89;
               background-color: #cde8eb;
@@ -546,6 +564,9 @@
               top:0;
               transform:rotate(45deg);
               background:#10b4da;
+          }
+          .alert-danger {
+              border-color: #917b7e;
           }
           .dashhead-titles {
               order: 3;
@@ -713,7 +734,7 @@
                 setupVue();
                 addEstToCompletionColumn();
                 detectTerminalSelect();
-                notification("Tsubaki's GroundCloud - Version 0.0.5 - Report any issues on Github.", "#0D0A05", "#0D0A05", "#0D0A05", "#0D0A05");
+                notification("Tsubaki's GroundCloud - Version 0.0.5 - Report any issues on Github.", "#0D0A05", "#000000", "#0D0A05", "#0D0A05");
                 editOverviewMap();
             }
             else if (checkPage('dashboard/login')) {
