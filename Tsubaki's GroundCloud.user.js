@@ -7,8 +7,6 @@
 // @match        https://groundcloud.io/*
 // @downloadURL https://github.com/trevorftp/Tsubakis-GroundCloud/blob/main/Tsubaki's%20GroundCloud.user.js
 // @updateURL	https://github.com/trevorftp/Tsubakis-GroundCloud/blob/main/Tsubaki's%20GroundCloud.user.js
-// @require     https://aethiingekaif4ua.storage.googleapis.com/frontend/js/dashboard/overview.js
-// @grant        GM_addStyle
 // ==/UserScript==
 
     /* Copyright (C) 2024 Trevor Derifield
@@ -63,12 +61,13 @@
     function notification(message, textColor, iconColor, bgColor, borderColor) {
         // Create a new div element for the notification
         var notificationDiv = document.createElement('div');
-        notificationDiv.className = 'route-list__stops_flagged alert alert-danger';
+        notificationDiv.className = 'route-list__stops_flagged alert';
         notificationDiv.setAttribute('data-v-33da10de', ''); // Set data-v attribute
 
         // Apply custom styles using CSS classes
         notificationDiv.classList.add('custom-notification');
         notificationDiv.style.color = textColor;
+        notificationDiv.style.fontWeight = '400';
         notificationDiv.style.backgroundColor = bgColor;
         notificationDiv.style.borderColor = borderColor;
 
@@ -454,6 +453,13 @@
               color: #0d0a05;
               background-color: #fcfaf6;
           }
+          .custom-notification {
+              background: linear-gradient(160deg, #f9c939, #694d89);
+              color: #0d0a05;
+          }
+          .logo {
+              padding-left: 12%;
+          }
           .topbar {
               margin-left: 0px;
               box-shadow: 0 0px 0px rgba(0,0,0,0.2)
@@ -707,7 +713,7 @@
                 setupVue();
                 addEstToCompletionColumn();
                 detectTerminalSelect();
-                notification("Tsubaki's GroundCloud - Version 0.0.5 - Report any issues to Trevor.", "#000000", "#73c714", "#ace36d", "#89b853");
+                notification("Tsubaki's GroundCloud - Version 0.0.5 - Report any issues on Github.", "#0D0A05", "#0D0A05", "#0D0A05", "#0D0A05");
                 editOverviewMap();
             }
             else if (checkPage('dashboard/login')) {
