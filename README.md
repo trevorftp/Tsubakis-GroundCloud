@@ -19,6 +19,7 @@ As stated the script is a work in progress, I will always push out my updates ev
 7.) Renamed "Name" row to "Work Area". <br />
 8.) Custom notifications with X, really just used to visually show the script is working. <br />
 9.) Topbar redesigned + sidebar collapsible at all times. <br />
+10.) CSS / color overhaul. <br />
 
 **Future Plans:** <br />
   ~~1.) Always be able to collapse sidebar. (Code is there just need to make it work)~~ <br />
@@ -28,7 +29,7 @@ As stated the script is a work in progress, I will always push out my updates ev
 
 **Bugs:** <br />
   ~~1.) Table will revert to original data and look when you select a terminal, refresh the page to get the look back. (I just need to detect this and update my data)~~ <br />
-  2.) The new stop and package bars are not centered vertically! <br />
+  ~~2.) The new stop and package bars are not centered vertically!~~ <br />
   3.) Time to completion estimates will sit at a low number if not all of the stops are "delivered". <br />
   4.) Login page sometimes doesnt update? Not a big deal. <br />
   5.) Driver icon dialogs update and original data is added after the custom data. <br />
