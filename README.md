@@ -38,8 +38,8 @@ As stated the script is a work in progress, I will always push out my updates ev
 
 And I am sure there are more bugs, just nothing I have found. It's not perfect.
 
-![bg1](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/7d5200bc-a1f4-4b0e-a816-90fd428333c4)
-![bg2](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/1ee7ae0a-779c-4ac1-a779-7141f42bd99c)
+![new1](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/56673587-d50a-42aa-9747-fdb63573ff9b)
+![new2](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/4608af76-d095-4ee3-bce4-20dd5ff5f5ac)
 ![Capture](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/233259ab-dff7-4726-ab2d-730088b20ec9)
 ![Screenshot 2024-02-23 125210](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/626668d6-6d55-4246-8efb-3f5c4f336a49)
 
