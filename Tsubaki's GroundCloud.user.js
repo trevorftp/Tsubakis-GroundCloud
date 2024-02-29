@@ -450,20 +450,21 @@
           a {
               color: #0e5777;
           }
-          .body {
+          body {
               color: #0d0a05;
               background-color: #fcfaf6;
           }
           .topbar {
               margin-left: 0px;
-              box-shadow:0 1px 2px rgba(0,0,0,0.2);
+              box-shadow: 0 0px 0px rgba(0,0,0,0.2)
               padding: 10px 10px 0 15px;
               background: #fcfaf6;
           }
           .topbar.legacy {
               margin-left: 0px;
-              box-shadow:0 1px 2px rgba(0,0,0,0.2);
+              box-shadow: 0 0px 0px rgba(0,0,0,0.2)
               padding: 10px 10px 0 15px;
+              background: #fcfaf6;
           }
           .topbar .dashhead .dashhead-subtitle {
               color: #0D0A05;
