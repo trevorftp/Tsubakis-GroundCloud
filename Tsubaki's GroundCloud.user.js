@@ -5,8 +5,8 @@
 // @description  Redesign GroundCloud.io
 // @author       Trevor Derifield
 // @match        https://groundcloud.io/*
-// @downloadURL https://github.com/trevorftp/Tsubakis-GroundCloud/blob/main/Tsubaki's%20GroundCloud.user.js
-// @updateURL	https://github.com/trevorftp/Tsubakis-GroundCloud/blob/main/Tsubaki's%20GroundCloud.user.js
+// @downloadURL https://github.com/trevorftp/Tsubakis-GroundCloud/raw/main/Tsubaki's%20GroundCloud.user.js
+// @updateURL	https://github.com/trevorftp/Tsubakis-GroundCloud/raw/main/Tsubaki's%20GroundCloud.user.js
 // ==/UserScript==
 
     /* Copyright (C) 2024 Trevor Derifield
