@@ -940,8 +940,8 @@
                 customizeForgotPasswordPage();
             }
             else if (checkPage('dashboard/routes', '\\d+/days/\\d+/')) {
-                setupVue('#route_details_viewapp');
-                setTimeout(routePage, 1000);
+                //setupVue('#route_details_viewapp');
+                //setTimeout(routePage, 1000);
             }
 
             addCustomCSS();
