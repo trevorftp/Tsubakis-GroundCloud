@@ -26,8 +26,12 @@ Once you have a userscript manager installed, follow these steps to install the 
 4. Your userscript manager should detect the script and open a new tab prompting you to install it. If not, copy the entire script.
 5. Paste the script into a new script file in your userscript manager.
 6. Ensure the script is set to run at "document-body".
-7. Save the script, and you're all set!
+7. Save the script, open up GroundCloud and you're all set!
 
 ### Step 3: Enjoy Tsubakis-GroundCloud!
 
 You've successfully installed the userscript! Enjoy the enhanced features and improvements it brings to your GroundCloud experience.
+
+### Issues and Bugs.
+
+If you come across any issues or bugs you can open issues here on Github or contact me wherever you can find me! Like stated it's a rough work in progress, It works for what Ive added but things are bound to break. If you have any major issues that prevent use of the original website you can just turn the script off and reload the page! Simple as that!
