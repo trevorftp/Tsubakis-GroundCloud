@@ -1,44 +1,52 @@
-# Tsubakis-GroundCloud
-The whole point of this userscript is to redesign GC which is a website used by FXG contractors to do various things. Intially it started as me wanting to add features and things I thought the website could use. Or things I find helpful for my day-to-day operations. It started out as a .NET application that uses the GC API, but I found this to be painful and I wanted a solution that other managers can use without having to download a program.
-So this was born, it's a userscript you can use with any userscript manager on your browser of choice. FireFox, Chrome, Etc.. I personally use tampermonkey, but they all funciton the same.
+# Tsubaki's GroundCloud
+![309496591-2dcd3fd4-eacd-4d4a-b100-21ff0d61e39f](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/9f9c76ea-e183-40bd-8c20-7cb21d2a4f8d)
 
-I never cared for Javascript or to learn it, I am actually learning it and choosing to retain information about it from this project, and some of that is reflected through the updates. So the code is and will be messy and may not make sense at points.
-I am doing what I can with the information I have discovered. If you have any input please let me know! I am really wanting feature requests as I can only think of so much, also if you are GC and have any questions or concerns please reach out!
-I am not trying to hurt any feelings with this project! 
+_Please note that while the intention is to enhance usability, I aim not to cause any inconvenience or offense. Constructive feedback is always welcome._
+## What is this?
+The whole point of this userscript is to redesign GC, a website used by FXG contractors for various tasks. Initially, it started as an endeavor to add features and improvements to the website that I found helpful for my day-to-day operations. Originally, it was a .NET application utilizing the GC API, but I found this approach cumbersome. I wanted a solution that other managers could use without needing to download a program. Thus, this userscript was born. It's a userscript compatible with any userscript manager on your browser of choice - whether it's FireFox, Chrome, or others. Personally, I use ViolentMonkey, but they all function similarly.
 
-Installion: Use your usersript manager of choice (I use TamperMonkey) paste the contents of the .JS into a script and set it to run at "document-body" and bam you're in!
+I never had much interest in JavaScript nor made an effort to learn it. This project has been a learning journey for me, and some of that journey is reflected in the updates. Therefore, the code may appear messy and may not make sense at times. I'm doing my best with the knowledge I've gained, and if you have any input, please don't hesitate to let me know! I'm particularly interested in feature requests since I can only think of so much. Additionally, if you are from GC and have any questions or concerns, please reach out! I assure you, I'm not attempting to offend anyone with this project.
 
-As stated the script is a work in progress, I will always push out my updates even if they aren't fully complete just to keep up to date! Any update I push is mostly working for what it's used for. So nothing crazy.
+## Installation
 
-**Current Goodies:** <br />
-1.) Login screen revamped. <br />
-3.) New row (Est. To Completeion) added to the dashboard table. This gives you an hour and minute estimate of that routes completeion. <br />
-4.) Increased information added to dashboard maps driver icons when clicked. <br />
-5.) Stop Progress bar redesign, thicker bars with stop data inside of them. <br />
-6.) Stop progress bars are color coded based on that routes time to completeion. <br />
-7.) Renamed "Name" row to "Work Area". <br />
-8.) Custom notifications with X, really just used to visually show the script is working. <br />
-9.) Topbar redesigned + sidebar collapsible at all times. <br />
-10.) CSS / color overhaul.  (Lighthouse scored new page a 98, vs the previous score of 84).<br />
-11.) ILS and Real service card on dashboard. <br />
+To install, use your userscript manager of choice (I use TamperMonkey). Simply paste the contents of the `.JS` file into a script and set it to run at "document-body". And that's it, you're good to go!
 
-**Future Plans:** <br />
-  ~~1.) Always be able to collapse sidebar. (Code is there just need to make it work)~~ <br />
-  2.) Route page stop icons replaced and color coded to sequence color. (In-Progress) <br />
-  3.) Clean up CSS, too many random things for it. <br />
-  4.) ??? <br />
+As mentioned earlier, the script is a work in progress. I'm committed to pushing out updates, even if they aren't fully complete, just to keep everything up to date. Rest assured, any update I push is mostly functional for its intended purpose.
 
-**Bugs:** <br />
-  ~~1.) Table will revert to original data and look when you select a terminal, refresh the page to get the look back. (I just need to detect this and update my data)~~ <br />
-  ~~2.) The new stop and package bars are not centered vertically!~~ <br />
-  3.) Time to completion estimates will sit at a low number if not all of the stops are "delivered". <br />
-  4.) Login page sometimes doesnt update? Not a big deal. <br />
-  5.) Driver icon dialogs update and original data is added after the custom data. <br />
-  ~~6.) The topbar structure is slightly different on some pages. (Drivers, Fleet Map, CSA, Inspection Settings, Route Schedule, Training Schedule, Completed Tests, Settings, Contract IDs, Your Account, ) This causes issues on 10 of the 48 pages with the redesigned topbar. (High priority)~~ <br />
-  7.) New sidebar icon slightly hard to click. <br />
-  8.) The routes page is not active, but is in the code. You can mess with it but its buggy.
+## Current Goodies And Updates
+
+- **Login screen revamped.** 
+- **New row (Est. To Completion) added to the dashboard table.** *Provides an estimate of a route's completion time.*
+- **Increased information added to dashboard maps driver icons when clicked.** *Enhances driver icon functionality.*
+- **Stop Progress bar redesign.** *Larger progress bars with stop data.*
+- **Stop progress bars are color-coded based on the route's time to completion.** *Utilizes the "Time To Completion" row for color-coding.*
+- **Renamed "Name" row to "Work Area".**
+- **Custom notifications with X.** *Visual indication of script activity.*
+- **Topbar redesigned + sidebar collapsible at all times.** *Improved navigation.*
+- **CSS/color overhaul.** *Significantly improved page performance.*
+- **ILS and Real service card on dashboard.** *Enhanced dashboard functionality.*
+
+## Future Plans
+
+- ~~Always be able to collapse sidebar. (Code is there just need to make it work)~~
+- **Route page stop icons replaced and color-coded to sequence color. (In-Progress)**
+- **Clean up CSS, too many random things for it.**
+- **???**
+
+## Bugs
+
+- **Time to completion estimates will sit at a low number if not all of the stops are "delivered".**
+- **Login page sometimes doesn't update? Not a big deal.**
+- **Driver icon dialogs update, and original data is added after the custom data.**
+- **New sidebar icon slightly hard to click.**
+- **The routes page is not active, but is in the code. You can mess with it but its buggy.**
+- ~~The top bar structure is slightly different on some pages. (Drivers, Fleet Map, CSA, Inspection Settings, Route Schedule, Training Schedule, Completed Tests, Settings, Contract IDs, Your Account) This causes issues on 10 of the 48 pages with the redesigned top bar. (High priority)~~
+- ~~Table will revert to original data and look when you select a terminal. Refresh the page to restore the desired appearance. (I just need to detect this and update my data)~~
+- ~~The new stop and package bars are not centered vertically!~~
 
 And I am sure there are more bugs, just nothing I have found. It's not perfect.
+
+## Screenshots
 
 **Dashboard (Sidebar Collapsed)**
 ![git1](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/1ae96f66-eeac-45d4-a423-d9047f57930a)
@@ -49,9 +57,11 @@ And I am sure there are more bugs, just nothing I have found. It's not perfect.
 **Login Screen**
 ![Screenshot 2024-02-23 125210](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/626668d6-6d55-4246-8efb-3f5c4f336a49)
 
-**Routes Page (Stops are dim because they where delivered) (FUTURE FEATURE)**
+**Routes Page (Stops are dim because they were delivered) (FUTURE FEATURE)**
 ![cap1](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/7af5eada-93e1-4ae8-8fa0-4ab0880c0765)
 
-**Dashboard Overview Map** <br />
+**Dashboard Overview Map**
+
 ![Capture](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/233259ab-dff7-4726-ab2d-730088b20ec9)
 
+---
