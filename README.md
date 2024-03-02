@@ -9,7 +9,7 @@ I never had much interest in JavaScript nor made an effort to learn it. This pro
 
 ## Installation
 
-To install, use your userscript manager of choice (I use TamperMonkey). Simply paste the contents of the `.JS` file into a script and set it to run at "document-body". And that's it, you're good to go!
+Full installation instructions [can be found here](https://github.com/trevorftp/Tsubakis-GroundCloud/blob/main/Installion%20Instructions.md), it's easy!
 
 As mentioned earlier, the script is a work in progress. I'm committed to pushing out updates, even if they aren't fully complete, just to keep everything up to date. Rest assured, any update I push is mostly functional for its intended purpose.
 
