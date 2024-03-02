@@ -5,6 +5,7 @@
 // @description  Redesign GroundCloud.io
 // @author       Trevor Derifield
 // @match        https://groundcloud.io/*
+// @run-at document-body
 // @downloadURL https://github.com/trevorftp/Tsubakis-GroundCloud/raw/main/Tsubaki's%20GroundCloud.user.js
 // @updateURL	https://github.com/trevorftp/Tsubakis-GroundCloud/raw/main/Tsubaki's%20GroundCloud.user.js
 // ==/UserScript==
@@ -939,8 +940,8 @@
                 customizeForgotPasswordPage();
             }
             else if (checkPage('dashboard/routes', '\\d+/days/\\d+/')) {
-                //setupVue('#route_details_viewapp');
-                //setTimeout(routePage, 1000);
+                setupVue('#route_details_viewapp');
+                setTimeout(routePage, 1000);
             }
 
             addCustomCSS();
