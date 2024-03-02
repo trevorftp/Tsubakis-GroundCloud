@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tsubaki's GroundCloud
 // @namespace    https://github.com/trevorftp
-// @version      0.0.5
+// @version      0.0.6
 // @description  Redesign GroundCloud.io
 // @author       Trevor Derifield
 // @match        https://groundcloud.io/*
@@ -30,29 +30,41 @@
 
     console.log('Tsubakis GroundCloud Script has ran!');
 
-    var appRoot, vueInstance, authWrapper, overview, overviewMap, routeList;
+    var appRoot, vueInstance, authWrapper, overview, overviewMap, routeList, routeDetails;
 
-    function checkPage(page) {
-        // Construct a regular expression to match the exact page URL
-        var regex = new RegExp('^https?://[^/]+/' + page + '/?$');
-        return regex.test(window.location.href);
+    function checkPage(page, pattern) {
+        // Check if only one argument is provided
+        if (arguments.length === 1) {
+            var regex = new RegExp('^https?://[^/]+/' + page + '/?$');
+            return regex.test(window.location.href);
+        }
+        // Check if two arguments are provided
+        else if (arguments.length === 2) {
+            var regex = new RegExp('^https?://[^/]+/' + page + '/' + pattern);
+            return regex.test(window.location.href);
+        }
     }
 
-    function setupVue() {
-        appRoot = document.querySelector('#overview_viewapp');
+    // New function that is a little smarter,
+    // Dashboard | <Root> -> <AuthWrapper> -> <Overview> -> <RouteList> and <OverviewMap>
+    // Routes | <Root> -> <AuthWrapper> -> <RouteDetails>
+    function setupVue(app) {
+        appRoot = document.querySelector(app);
         if (appRoot) {
             vueInstance = appRoot.__vue__;
             if (vueInstance) {
                 authWrapper = vueInstance.$children.find(child => child.$options.name === 'AuthWrapper');
                 if (authWrapper) {
-                    overview = authWrapper.$children.find(child => child.$options.name === 'Overview');
-                    if (overview) {
+                    if (authWrapper.$children.find(child => child.$options.name === 'Overview')) {
+                        overview = authWrapper.$children.find(child => child.$options.name === 'Overview');
                         overviewMap = overview.$children.find(child => child.$options.name === 'OverviewMap');
                         if (overviewMap) {
                             routeList = overview.$children.find(child => child.$options.name === 'RouteList');
-                            console.log('Vue instance hierarchy traversed, final object: ', routeList);
-                        } else { console.log('OverviewMap could not be found.'); }
-                    } else { console.log('Overview could not be found.'); }
+                        }
+                    }
+                    else if (authWrapper.$children.find(child => child.$options.name === 'RouteDetails')) {
+                      routeDetails = authWrapper.$children.find(child => child.$options.name === 'RouteDetails');
+                    } else { console.log('No children could be found.'); }
                 } else { console.log('AuthWrapper could not be found.'); }
             } else { console.log('The Vue instance could not be found.'); }
         } else { console.log('The Vue instance could not be found.'); }
@@ -119,9 +131,9 @@
     }
 
     function refreshTableData() {
+        createServiceCard();
         // Find all table rows
         var tableRows = document.querySelectorAll('.route-list-row__row');
-
         // Iterate through each table row
         tableRows.forEach(function(row, index) {
             // Check if the custom row already exists
@@ -194,6 +206,95 @@
       observer.observe(fleetMap, { childList: true });
     }
 
+    function createServiceCard() {
+        let totalPackageStats = 0;
+        let totalImpactStats = 0;
+        let totalExceptionStats = 0;
+
+        // Iterate through packageStatsByRouteDay
+        Object.values(routeList.packageStatsByRouteDay).forEach(routeStats => {
+            if (routeStats && typeof routeStats === 'object') {
+                totalPackageStats += routeStats.total || 0; // Add total, defaulting to 0 if undefined
+            }
+        });
+
+        // Iterate through impactStatsByRouteDay
+        Object.values(routeList.impactStatsByRouteDay).forEach(routeStats => {
+            if (routeStats && typeof routeStats === 'object') {
+                totalImpactStats += routeStats.completed || 0; // Add completed, defaulting to 0 if undefined
+            }
+        });
+
+        // Iterate through impactStatsByRouteDay
+        Object.values(routeList.exceptionStatsByRouteDay).forEach(routeStats => {
+            if (routeStats && typeof routeStats === 'object') {
+                totalExceptionStats += routeStats.completed || 0; // Add completed, defaulting to 0 if undefined
+            }
+        });
+
+        const ilsRatio = totalPackageStats / (totalPackageStats + totalImpactStats) * 100;
+        const realRatio = totalPackageStats / (totalPackageStats + totalImpactStats + totalExceptionStats) * 100;
+
+        if (!document.querySelector('.card.mx-1.route-list-totals-bar-service-scores')) {
+            const serviceCard = document.createElement('div');
+            serviceCard.setAttribute('data-v-0261712b', '');
+            serviceCard.classList.add('card', 'mx-1', 'route-list-totals-bar-service-scores');
+
+            // Create card body
+            const cardBody = document.createElement('div');
+            cardBody.setAttribute('data-v-0261712b', '');
+            cardBody.classList.add('card-body', 'p-2');
+
+            // Create container for left side elements
+            const leftContainer = document.createElement('div');
+            leftContainer.classList.add('float-left');
+            leftContainer.style.textAlign = 'left'; // Set text-align: left
+
+            // Create container for right side elements
+            const rightContainer = document.createElement('div');
+            rightContainer.classList.add('float-right');
+            rightContainer.style.textAlign = 'right'; // Set text-align: right
+
+            // Create h3 element for the left side
+            const ilsH3 = document.createElement('h3');
+            ilsH3.setAttribute('data-v-0261712b', '');
+            ilsH3.classList.add('mb-0', 'text-nowrap');
+            ilsH3.textContent = 'ILS';
+
+            // Create h3 element for the right side
+            const realH3 = document.createElement('h3');
+            realH3.setAttribute('data-v-0261712b', '');
+            realH3.classList.add('mb-0', 'text-nowrap');
+            realH3.textContent = 'Real';
+
+            const ilsText = document.createTextNode(ilsRatio.toFixed(1) + '%');
+
+            const realText = document.createTextNode(realRatio.toFixed(1) + '%');
+
+            // Append elements to their respective containers
+            leftContainer.appendChild(ilsH3);
+            leftContainer.appendChild(ilsText);
+            rightContainer.appendChild(realH3);
+            rightContainer.appendChild(realText);
+
+            // Append containers to the card body
+            cardBody.appendChild(leftContainer);
+            cardBody.appendChild(rightContainer);
+
+            // Append card body to the new card
+            serviceCard.appendChild(cardBody);
+
+            const cardDeck = document.querySelector('.route-list-totals-bar.card-deck.mx-0');
+
+            cardDeck.insertBefore(serviceCard, cardDeck.firstElementChild);
+        } else {
+            const ilsText = document.querySelector('.card.mx-1.route-list-totals-bar-service-scores .float-left').lastChild;
+            const realText = document.querySelector('.card.mx-1.route-list-totals-bar-service-scores .float-right').lastChild;
+            ilsText.textContent = ilsRatio.toFixed(1) + '%';
+            realText.textContent = realRatio.toFixed(1) + '%';
+        }
+    }
+
     // Function to add the 'Est. To Completion' column to the table
     function addEstToCompletionColumn() {
         // Select the header row element
@@ -217,7 +318,7 @@
                 var estCompTh = document.createElement('th');
                 estCompTh.textContent = estCompHead;
                 estCompTh.setAttribute('data-v-33da10de', ''); // Set data-v attribute
-                //estCompTh.setAttribute('data-sortby', 'Completion'); // Set data-sortby attribute to match sorting functionality
+                estCompTh.setAttribute('data-sortby', 'Completion'); // Set data-sortby attribute so we can find it later!!
                 headerRow.appendChild(estCompTh);
             }
 
@@ -725,23 +826,121 @@
             }
         }
     }
+    // __e3_ seems to be events?
+    // routeMarkers everything (drawn on the map essentially.)
+    // routeMarker objects - .info seems to be the info for the dialog box that shows when you click a stop.
+    // label is clearly the label number and text color
+    // icon is the stop icon, set by the
+    // stopId - in this example first stop was pickup and id was 4290435321.
+
+    // Need to go over each object in routeMarkers, Ignore stops that arent delivery or pickup markers.
+    function routePage() {
+        //routeDetails.truckIcon = 'https://i.imgur.com/QP9rANe.png';
+        // Iterate through stops array
+        for (let stop of routeDetails.routeDay.stops) {
+            // Get the stop ID
+            let sid = stop.sid;
+
+            // Convert sid to a number
+            let sidNumber = parseInt(sid);
+
+            // Determine the icon URL based on the sid number
+            let iconUrl;
+            let iconUrlDim;
+            if (!sid || isNaN(sidNumber) || sid == 0) {
+                // If sid is null, doesn't exist, or is not a number
+                iconUrl = 'https://tsubaki.moe/default_target.png';
+                iconUrlDim = 'https://tsubaki.moe/default_target_dimmed.png';
+            } else if (sidNumber >= 0 && sidNumber < 2000) {
+                iconUrl = 'https://tsubaki.moe/yellow_target.png';
+                iconUrlDim = 'https://tsubaki.moe/yellow_target_dimmed.png';
+            } else if (sidNumber >= 2000 && sidNumber < 3000) {
+                iconUrl = 'https://tsubaki.moe/red_target.png';
+                iconUrlDim = 'https://tsubaki.moe/red_target_dimmed.png';
+            } else if (sidNumber >= 3000 && sidNumber < 4000) {
+                iconUrl = 'https://tsubaki.moe/green_target.png';
+                iconUrlDim = 'https://tsubaki.moe/green_target_dimmed.png';
+            } else if (sidNumber >= 4000 && sidNumber < 5000) {
+                iconUrl = 'https://tsubaki.moe/green_target.png';
+                iconUrlDim = 'https://tsubaki.moe/cyan_target_dimmed.png';
+            } else if (sidNumber >= 5000 && sidNumber < 6000) {
+                iconUrl = 'https://tsubaki.moe/pink_target.png';
+                iconUrlDim = 'https://tsubaki.moe/pink_target_dimmed.png';
+            } else if (sidNumber >= 6000 && sidNumber < 7000) {
+                iconUrl = 'https://tsubaki.moe/grey_target.png';
+                iconUrlDim = 'https://tsubaki.moe/grey_target_dimmed.png';
+            } else if (sidNumber >= 7000 && sidNumber < 8000) {
+                iconUrl = 'https://tsubaki.moe/orange_target.png';
+                iconUrlDim = 'https://tsubaki.moe/orange_target_dimmed.png';
+            } else if (sidNumber >= 8000 && sidNumber < 9000) {
+                iconUrl = 'https://tsubaki.moe/purple_target.png';
+                iconUrlDim = 'https://tsubaki.moe/purple_target_dimmed.png';
+            } else {
+                // If sid is any other value
+                iconUrl = 'https://tsubaki.moe/default_target.png';
+                iconUrlDim = 'https://tsubaki.moe/default_target_dimmed.png';
+            }
+
+            // Find corresponding routeMarker with the same stopId
+            let matchingRouteMarker = routeDetails.routeMarkers.find(marker => marker.stopId === stop.id);
+            matchingRouteMarker.icon.url = iconUrl;
+            // If a matching routeMarker is found
+            if (matchingRouteMarker && stop.stop_type == 'delivery') {
+                if (stop.combined_status == null || !stop.combined_status.delivered) {
+                    matchingRouteMarker.icon.url = iconUrl;
+                    Vue.set(routeDetails, 'stopIcon', iconUrl);
+                } else if (stop.combined_status.delivered) {
+                    matchingRouteMarker.icon.url = iconUrlDim;
+                    Vue.set(routeDetails, 'stopDeliveredIcon', iconUrlDim);
+                }
+            }
+        }
+    }
+
+    function removeStopParameterFromURL() {
+        // Get the current URL
+        var currentURL = window.location.href;
+
+        // Check if the URL contains the 'stop' parameter
+        if (currentURL.includes('?stop=')) {
+            // Split the URL into base URL and parameters
+            var parts = currentURL.split('?');
+            var baseURL = parts[0];
+
+            // Get the remaining parameters excluding the 'stop' parameter
+            var remainingParameters = parts[1].split('&').filter(function(param) {
+                return !param.startsWith('stop=');
+            });
+
+            // Construct the updated URL without the 'stop' parameter
+            var updatedURL = baseURL + (remainingParameters.length > 0 ? '?' + remainingParameters.join('&') : '');
+
+            // Update the URL without reloading the page
+            window.history.replaceState({}, document.title, updatedURL);
+        }
+    }
 
     // Wait for the DOM content to load
     document.addEventListener('DOMContentLoaded', function() {
         // Add a short delay to ensure elements are fully loaded
         setTimeout(function() {
             if (checkPage('dashboard')) {
-                setupVue();
+                setupVue('#overview_viewapp');
                 addEstToCompletionColumn();
                 detectTerminalSelect();
-                notification("Tsubaki's GroundCloud - Version 0.0.5 - Report any issues on Github.", "#0D0A05", "#000000", "#0D0A05", "#0D0A05");
+                notification("Tsubaki's GroundCloud - Version 0.0.6 - Report any issues on Github.", "#0D0A05", "#000000", "#0D0A05", "#0D0A05");
                 editOverviewMap();
+                createServiceCard();
             }
             else if (checkPage('dashboard/login')) {
                 customizeLoginPage();
             }
             else if (checkPage('dashboard/users/password_reset')) {
                 customizeForgotPasswordPage();
+            }
+            else if (checkPage('dashboard/routes', '\\d+/days/\\d+/')) {
+                //setupVue('#route_details_viewapp');
+                //setTimeout(routePage, 1000);
             }
 
             addCustomCSS();
