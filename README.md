@@ -7,6 +7,8 @@ The whole point of this userscript is to redesign GC, a website used by FXG cont
 
 I never had much interest in JavaScript nor made an effort to learn it. This project has been a learning journey for me, and some of that journey is reflected in the updates. Therefore, the code may appear messy and may not make sense at times. I'm doing my best with the knowledge I've gained, and if you have any input, please don't hesitate to let me know! I'm particularly interested in feature requests since I can only think of so much. Additionally, if you are from GC and have any questions or concerns, please reach out! I assure you, I'm not attempting to offend anyone with this project.
 
+**This project, a userscript, modifies the website locally on your computer by executing JavaScript code on the page after it loads. It doesn't save any data, nor does it send or request any network information. All the source code is openly available here, and the sole purpose of this script is to enhance the user experience for convenience and quality of life.**
+
 ## Installation
 
 Full installation instructions [can be found here](https://github.com/trevorftp/Tsubakis-GroundCloud/blob/main/Installion%20Instructions.md), it's easy!
