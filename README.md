@@ -20,10 +20,11 @@ As stated the script is a work in progress, I will always push out my updates ev
 8.) Custom notifications with X, really just used to visually show the script is working. <br />
 9.) Topbar redesigned + sidebar collapsible at all times. <br />
 10.) CSS / color overhaul.  (Lighthouse scored new page a 98, vs the previous score of 84).<br />
+11.) ILS and Real service card on dashboard. <br />
 
 **Future Plans:** <br />
   ~~1.) Always be able to collapse sidebar. (Code is there just need to make it work)~~ <br />
-  2.) Route page stop icons replaced and color coded to sequence color. <br />
+  2.) Route page stop icons replaced and color coded to sequence color. (In-Progress) <br />
   3.) Clean up CSS, too many random things for it. <br />
   4.) ??? <br />
 
@@ -35,11 +36,22 @@ As stated the script is a work in progress, I will always push out my updates ev
   5.) Driver icon dialogs update and original data is added after the custom data. <br />
   ~~6.) The topbar structure is slightly different on some pages. (Drivers, Fleet Map, CSA, Inspection Settings, Route Schedule, Training Schedule, Completed Tests, Settings, Contract IDs, Your Account, ) This causes issues on 10 of the 48 pages with the redesigned topbar. (High priority)~~ <br />
   7.) New sidebar icon slightly hard to click. <br />
+  8.) The routes page is not active, but is in the code. You can mess with it but its buggy.
 
 And I am sure there are more bugs, just nothing I have found. It's not perfect.
 
-![new1](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/56673587-d50a-42aa-9747-fdb63573ff9b)
-![new2](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/4608af76-d095-4ee3-bce4-20dd5ff5f5ac)
-![Capture](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/233259ab-dff7-4726-ab2d-730088b20ec9)
+**Dashboard (Sidebar Collapsed)**
+![git1](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/1ae96f66-eeac-45d4-a423-d9047f57930a)
+
+**Dashboard (Sidebar Open)**
+![git2](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/f35e6db7-6aca-4c03-9b4b-7c2e83cafb10)
+
+**Login Screen**
 ![Screenshot 2024-02-23 125210](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/626668d6-6d55-4246-8efb-3f5c4f336a49)
+
+**Routes Page (Stops are dim because they where delivered) (FUTURE FEATURE)**
+![cap1](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/7af5eada-93e1-4ae8-8fa0-4ab0880c0765)
+
+**Dashboard Overview Map** <br />
+![Capture](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/233259ab-dff7-4726-ab2d-730088b20ec9)
 
