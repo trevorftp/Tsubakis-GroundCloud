@@ -36,6 +36,8 @@ As mentioned earlier, the script is a work in progress. I'm committed to pushing
 - **Add more data to exceptions popout on dashboard, such as time of exception and a search icon that takes you to package search page for that tracking number.**
 - **A quick dispatch button on the dashboard that allows you to select from routes on the dashboard to dispatch.**
 - **Add ability to select specific stops if multiple fall under the same address / location. Such as suites, apartments or a location with a delivery and pickup.**
+- **Fully intergrate the logic and functions with the Vue data, want to get away from getting any information directly from HTML.**
+- **As always optimize and improve code.**
 
 ## Bugs
 
