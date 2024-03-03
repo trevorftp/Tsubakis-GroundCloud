@@ -1,7 +1,8 @@
 # Tsubaki's GroundCloud
 ![309496591-2dcd3fd4-eacd-4d4a-b100-21ff0d61e39f](https://github.com/trevorftp/Tsubakis-GroundCloud/assets/17115206/9f9c76ea-e183-40bd-8c20-7cb21d2a4f8d)
 
-_Please note that while the intention is to enhance usability, I aim not to cause any inconvenience or offense. Constructive feedback is always welcome._
+_Please note that while the intention is to enhance usability, I aim not to cause any inconvenience or offense. Constructive feedback is always welcome. As I wish to expand upon and add features and requests that help improve GroundCloud for all._ **I will never add features or requests similar to features currently locked behind a GroundCloud PRO plan.**
+
 ## What is this?
 The whole point of this userscript is to redesign GC, a website used by FXG contractors for various tasks. Initially, it started as an endeavor to add features and improvements to the website that I found helpful for my day-to-day operations. Originally, it was a .NET application utilizing the GC API, but I found this approach cumbersome. I wanted a solution that other managers could use without needing to download a program. Thus, this userscript was born. It's a userscript compatible with any userscript manager on your browser of choice - whether it's FireFox, Chrome, or others. Personally, I use ViolentMonkey, but they all function similarly.
 
