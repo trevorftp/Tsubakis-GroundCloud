@@ -41,11 +41,11 @@ As mentioned earlier, the script is a work in progress. I'm committed to pushing
 
 ## Bugs
 
-- **Time to completion estimates will sit at a low number if not all of the stops are "delivered".**
 - **Login page sometimes doesn't update? Not a big deal.**
-- **Driver icon dialogs update, and original data is added after the custom data.**
 - **New sidebar icon slightly hard to click.**
 - **The routes page is not active, but is in the code. You can mess with it but its buggy.**
+- ~~Time to completion estimates will sit at a low number if not all of the stops are "delivered".~~
+- ~~Driver icon dialogs update, and original data is added after the custom data.~~
 - ~~The top bar structure is slightly different on some pages. (Drivers, Fleet Map, CSA, Inspection Settings, Route Schedule, Training Schedule, Completed Tests, Settings, Contract IDs, Your Account) This causes issues on 10 of the 48 pages with the redesigned top bar. (High priority)~~
 - ~~Table will revert to original data and look when you select a terminal. Refresh the page to restore the desired appearance. (I just need to detect this and update my data)~~
 - ~~The new stop and package bars are not centered vertically!~~
