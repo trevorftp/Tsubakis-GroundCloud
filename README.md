@@ -24,6 +24,7 @@ As mentioned earlier, the script is a work in progress. I'm committed to pushing
 - **Stop Progress bar redesign.** *Larger progress bars with stop data.*
 - **Stop progress bars are color-coded based on the route's time to completion.** *Utilizes the "Time To Completion" row for color-coding.*
 - **Renamed "Name" row to "Work Area".**
+- **Added ability to dashboard notifications.**
 - **Custom notifications with X.** *Visual indication of script activity.*
 - **Topbar redesigned + sidebar collapsible at all times.** *Improved navigation.*
 - **CSS/color overhaul.** *Significantly improved page performance.*
@@ -42,7 +43,7 @@ As mentioned earlier, the script is a work in progress. I'm committed to pushing
 ## Bugs
 
 - **Login page sometimes doesn't update? Not a big deal.**
-- **New sidebar icon slightly hard to click.**
+- ~~New sidebar icon slightly hard to click.~~
 - **The routes page is not active, but is in the code. You can mess with it but its buggy.**
 - ~~Time to completion estimates will sit at a low number if not all of the stops are "delivered".~~
 - ~~Driver icon dialogs update, and original data is added after the custom data.~~
