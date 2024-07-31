@@ -24,7 +24,7 @@ As mentioned earlier, the script is a work in progress. I'm committed to pushing
 - **Stop Progress bar redesign.** *Larger progress bars with stop data.*
 - **Stop progress bars are color-coded based on the route's time to completion.** *Utilizes the "Time To Completion" row for color-coding.*
 - **Renamed "Name" row to "Work Area".**
-- **Added ability to dashboard notifications.**
+- **Added ability to close / remove dashboard notifications.**
 - **Custom notifications with X.** *Visual indication of script activity.*
 - **Topbar redesigned + sidebar collapsible at all times.** *Improved navigation.*
 - **CSS/color overhaul.** *Significantly improved page performance.*
