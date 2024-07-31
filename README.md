@@ -12,7 +12,7 @@ I never had much interest in JavaScript nor made an effort to learn it. This pro
 
 ## Installation
 
-Full installation instructions [can be found here](https://github.com/trevorftp/Tsubakis-GroundCloud/blob/main/Installion%20Instructions.md), it's easy!
+Full installation instructions [can be found here](https://github.com/trevorftp/Tsubakis-GroundCloud/blob/main/Installation%20Instructions.md), it's easy!
 
 As mentioned earlier, the script is a work in progress. I'm committed to pushing out updates, even if they aren't fully complete, just to keep everything up to date. Rest assured, any update I push is mostly functional for its intended purpose.
 
